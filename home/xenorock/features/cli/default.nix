@@ -13,7 +13,7 @@
     ./pfetch.nix
     ./ranger.nix
     ./screen.nix
-    ./shellcolor.nix
+    # ./shellcolor.nix
     # ./ssh.nix
     ./starship.nix
     # ./xpo.nix
@@ -31,16 +31,16 @@
     httpie # Better curl
     diffsitter # Better diff
     jq # JSON pretty printer and manipulator
-    trekscii # Cute startrek cli printer
+    # trekscii # Cute startrek cli printer
     timer # To help with my ADHD paralysis
 
     nil # Nix LSP
     nixfmt # Nix formatter
-    nix-inspect # See which pkgs are in your PATH
+    # nix-inspect # See which pkgs are in your PATH
 
     ltex-ls # Spell checking LSP
 
-    tly # Tally counter
+    # tly # Tally counter
 
     # inputs.nh.default # nixos-rebuild and home-manager CLI wrapper
   ];

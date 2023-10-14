@@ -7,10 +7,8 @@
     ./keepassxc.nix
     ./gtk.nix
     # ./kdeconnect.nix
-    # ./playerctl.nix
+    ./playerctl.nix
     ./qt.nix
-    # ./sublime-music.nix
+    ./sublime-music.nix
   ];
-
-  xdg.mimeApps.enable = true;
 }

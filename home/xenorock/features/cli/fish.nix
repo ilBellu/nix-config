@@ -7,9 +7,9 @@ let
   hasNeovim = config.programs.neovim.enable;
   hasEmacs = config.programs.emacs.enable;
   hasNeomutt = config.programs.neomutt.enable;
-  hasShellColor = config.programs.shellcolor.enable;
+  # hasShellColor = config.programs.shellcolor.enable;
   hasKitty = config.programs.kitty.enable;
-  shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
+  # shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
 in
 {
   programs.fish = {
@@ -58,17 +58,17 @@ in
       # Grep using ripgrep and pass to nvim
       nvimrg = mkIf (hasNeomutt && hasRipgrep) "nvim -q (rg --vimgrep $argv | psub)";
       # Integrate ssh with shellcolord
-      ssh = mkIf hasShellColor ''
-        ${shellcolor} disable $fish_pid
+      # ssh = mkIf hasShellColor ''
+        # ${shellcolor} disable $fish_pid
         # Check if kitty is available
-        if set -q KITTY_PID && set -q KITTY_WINDOW_ID && type -q -f kitty
-          kitty +kitten ssh $argv
-        else
-          command ssh $argv
-        end
-        ${shellcolor} enable $fish_pid
-        ${shellcolor} apply $fish_pid
-      '';
+        # if set -q KITTY_PID && set -q KITTY_WINDOW_ID && type -q -f kitty
+          # kitty +kitten ssh $argv
+        # else
+          # command ssh $argv
+        # end
+        # ${shellcolor} enable $fish_pid
+        # ${shellcolor} apply $fish_pid
+      # '';
     };
     interactiveShellInit =
       # Open command buffer in vim when alt+e is pressed

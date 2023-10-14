@@ -82,21 +82,21 @@
 
       bind = let
         # swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-        # playerctl = "${config.services.playerctld.package}/bin/playerctl";
-        # playerctld = "${config.services.playerctld.package}/bin/playerctld";
+        playerctl = "${config.services.playerctld.package}/bin/playerctl";
+        playerctld = "${config.services.playerctld.package}/bin/playerctld";
         # makoctl = "${config.services.mako.package}/bin/makoctl";
-        # wofi = "${config.programs.wofi.package}/bin/wofi";
+        wofi = "${config.programs.wofi.package}/bin/wofi";
         # pass-wofi = "${pkgs.pass-wofi.override {
         # pass = config.programs.password-store.package;
         # }}/bin/pass-wofi";
         # grimblast = "${pkgs.inputs.hyprwm-contrib.grimblast}/bin/grimblast";
-        # pactl = "${pkgs.pulseaudio}/bin/pactl";
+        pactl = "${pkgs.pulseaudio}/bin/pactl";
         # tly = "${pkgs.tly}/bin/tly";
         # gtk-play = "${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play";
         # notify-send = "${pkgs.libnotify}/bin/notify-send";
-        # gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
-        # xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
-        # defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
+        gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
+        xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
+        defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
         # terminal = config.home.sessionVariables.TERMINAL;
         terminal = "${pkgs.kitty}/bin/kitty";
         browser = "${pkgs.firefox}/bin/firefox";
@@ -114,11 +114,11 @@
         ",XF86MonBrightnessUp,exec,light -A 10"
         ",XF86MonBrightnessDown,exec,light -U 10"
         # Volume
-        # ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
-        # ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
-        # ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
-        # "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-        # ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+        ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
+        ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
+        ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
+        "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+        ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
         # Screenshotting
         # ",Print,exec,${grimblast} --notify --freeze copy output"
         # "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
@@ -130,18 +130,18 @@
         # "SUPERCONTROL,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} undo && ${gtk-play} -i dialog-warning" # Undo last entry
         # "SUPERCONTROLSHIFT,z,exec,${tly} reset && ${gtk-play} -i complete" # Reset
         # "SUPERSHIFT,z,exec,${notify-send} -t 1000 $(${tly} time)" # Show current time
-      ]; # ++
+      ] ++
 
-      # (lib.optionals config.services.playerctld.enable [
+      (lib.optionals config.services.playerctld.enable [
       # Media control
-      # ",XF86AudioNext,exec,${playerctl} next"
-      # ",XF86AudioPrev,exec,${playerctl} previous"
-      # ",XF86AudioPlay,exec,${playerctl} play-pause"
-      # ",XF86AudioStop,exec,${playerctl} stop"
-      # "ALT,XF86AudioNext,exec,${playerctld} shift"
-      # "ALT,XF86AudioPrev,exec,${playerctld} unshift"
-      # "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
-      # ]) ++
+      ",XF86AudioNext,exec,${playerctl} next"
+      ",XF86AudioPrev,exec,${playerctl} previous"
+      ",XF86AudioPlay,exec,${playerctl} play-pause"
+      ",XF86AudioStop,exec,${playerctl} stop"
+      "ALT,XF86AudioNext,exec,${playerctld} shift"
+      "ALT,XF86AudioPrev,exec,${playerctld} unshift"
+      "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
+      ]) ++
       # Screen lock
       # (lib.optionals config.programs.swaylock.enable [
       # ",XF86Launch5,exec,${swaylock} -i ${config.wallpaper}"
@@ -154,10 +154,10 @@
       # ]) ++
 
       # Launcher
-      # (lib.optionals config.programs.wofi.enable [
-      # "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-      # "SUPER,d,exec,${wofi} -S run"
-      # ] ++ (lib.optionals config.programs.password-store.enable [
+      (lib.optionals config.programs.wofi.enable [
+      "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+      "SUPER,d,exec,${wofi} -S run"
+      ]); # ++ (lib.optionals config.programs.password-store.enable [
       # ",Scroll_Lock,exec,${pass-wofi}" # fn+k
       # ",XF86Calculator,exec,${pass-wofi}" # fn+f12
       # "SUPER,semicolon,exec,pass-wofi"
