@@ -8,7 +8,7 @@
     ../common
     ../common/wayland-wm
 
-    # ./tty-init.nix
+    ./tty-init.nix
     ./basic-binds.nix
     ./systemd-fixes.nix
   ];
@@ -16,7 +16,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     # package = pkgs.hyprland.hyprland;
-
+    enableNvidiaPatches = true; # Nvidia try
     settings = {
       general = {
         gaps_in = 15;
@@ -81,10 +81,10 @@
       ];
 
       bind = let
-        # swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+        swaylock = "${config.programs.swaylock.package}/bin/swaylock";
         playerctl = "${config.services.playerctld.package}/bin/playerctl";
         playerctld = "${config.services.playerctld.package}/bin/playerctld";
-        # makoctl = "${config.services.mako.package}/bin/makoctl";
+        makoctl = "${config.services.mako.package}/bin/makoctl";
         wofi = "${config.programs.wofi.package}/bin/wofi";
         # pass-wofi = "${pkgs.pass-wofi.override {
         # pass = config.programs.password-store.package;
@@ -93,86 +93,94 @@
         pactl = "${pkgs.pulseaudio}/bin/pactl";
         # tly = "${pkgs.tly}/bin/tly";
         # gtk-play = "${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play";
-        # notify-send = "${pkgs.libnotify}/bin/notify-send";
+        notify-send = "${pkgs.libnotify}/bin/notify-send";
         gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
         xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
         defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
-        # terminal = config.home.sessionVariables.TERMINAL;
-        terminal = "${pkgs.kitty}/bin/kitty";
+        terminal = config.home.sessionVariables.TERMINAL;
+        password-manager = "${pkgs.keepassxc}/bin/keepassxc";
         browser = "${pkgs.firefox}/bin/firefox";
         editor = "${pkgs.neovim}/bin/nvim";
         # editor = config.home.sessionVariables.EDITOR;
         # browser = defaultApp "x-scheme-handler/https";
         # editor = defaultApp "text/plain";
-      in [
-        # Program bindings
-        "SUPER,Return,exec,${terminal}"
-        "SUPER,e,exec,${editor}"
-        "SUPER,v,exec,${editor}"
-        "SUPER,b,exec,${browser}"
-        # Brightness control (only works if the system has lightd)
-        ",XF86MonBrightnessUp,exec,light -A 10"
-        ",XF86MonBrightnessDown,exec,light -U 10"
-        # Volume
-        ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
-        ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
-        ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
-        "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-        ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-        # Screenshotting
-        # ",Print,exec,${grimblast} --notify --freeze copy output"
-        # "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
-        # "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
-        # "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
-        # "ALT,Print,exec,${grimblast} --notify --freeze copy area"
-        # Tally counter
-        # "SUPER,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} add && ${gtk-play} -i dialog-information" # Add new entry
-        # "SUPERCONTROL,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} undo && ${gtk-play} -i dialog-warning" # Undo last entry
-        # "SUPERCONTROLSHIFT,z,exec,${tly} reset && ${gtk-play} -i complete" # Reset
-        # "SUPERSHIFT,z,exec,${notify-send} -t 1000 $(${tly} time)" # Show current time
-      ] ++
-
-      (lib.optionals config.services.playerctld.enable [
-      # Media control
-      ",XF86AudioNext,exec,${playerctl} next"
-      ",XF86AudioPrev,exec,${playerctl} previous"
-      ",XF86AudioPlay,exec,${playerctl} play-pause"
-      ",XF86AudioStop,exec,${playerctl} stop"
-      "ALT,XF86AudioNext,exec,${playerctld} shift"
-      "ALT,XF86AudioPrev,exec,${playerctld} unshift"
-      "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
-      ]) ++
-      # Screen lock
-      # (lib.optionals config.programs.swaylock.enable [
-      # ",XF86Launch5,exec,${swaylock} -i ${config.wallpaper}"
-      # ",XF86Launch4,exec,${swaylock} -i ${config.wallpaper}"
-      # "SUPER,backspace,exec,${swaylock} -i ${config.wallpaper}"
-      # ]) ++
-      # Notification manager
-      # (lib.optionals config.services.mako.enable [
-      # "SUPER,w,exec,${makoctl} dismiss"
-      # ]) ++
-
-      # Launcher
-      (lib.optionals config.programs.wofi.enable [
-      "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-      "SUPER,d,exec,${wofi} -S run"
-      ]); # ++ (lib.optionals config.programs.password-store.enable [
+      in
+        [
+          # Program bindings
+          "SUPER,Return,exec,${terminal}"
+          "SUPER,e,exec,${editor}"
+          "SUPER,v,exec,${editor}"
+          "SUPER,b,exec,${browser}"
+          "SUPER,semicolon,exec,${password-manager}"
+          ",Scroll_lock,exec,${password-manager}"
+          # Brightness control (only works if the system has lightd)
+          ",XF86MonBrightnessUp,exec,light -A 10"
+          ",XF86MonBrightnessDown,exec,light -U 10"
+          # Volume
+          ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
+          ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
+          ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
+          "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+          ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+          # Screenshotting
+          # ",Print,exec,${grimblast} --notify --freeze copy output"
+          # "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
+          # "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
+          # "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
+          # "ALT,Print,exec,${grimblast} --notify --freeze copy area"
+          # Tally counter
+          # "SUPER,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} add && ${gtk-play} -i dialog-information" # Add new entry
+          # "SUPERCONTROL,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} undo && ${gtk-play} -i dialog-warning" # Undo last entry
+          # "SUPERCONTROLSHIFT,z,exec,${tly} reset && ${gtk-play} -i complete" # Reset
+          # "SUPERSHIFT,z,exec,${notify-send} -t 1000 $(${tly} time)" # Show current time
+        ]
+        ++ (lib.optionals config.services.playerctld.enable [
+          # Media control
+          ",XF86AudioNext,exec,${playerctl} next"
+          ",XF86AudioPrev,exec,${playerctl} previous"
+          ",XF86AudioPlay,exec,${playerctl} play-pause"
+          ",XF86AudioStop,exec,${playerctl} stop"
+          "ALT,XF86AudioNext,exec,${playerctld} shift"
+          "ALT,XF86AudioPrev,exec,${playerctld} unshift"
+          "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
+        ])
+        ++
+        # Screen lock
+        (lib.optionals config.programs.swaylock.enable [
+          ",XF86Launch5,exec,${swaylock} -i ${config.wallpaper}"
+          ",XF86Launch4,exec,${swaylock} -i ${config.wallpaper}"
+          "SUPER,backspace,exec,${swaylock} -i ${config.wallpaper}"
+        ])
+        ++
+        # Notification manager
+        (lib.optionals config.services.mako.enable [
+          "SUPER,w,exec,${makoctl} dismiss"
+        ])
+        ++
+        # Launcher
+        (lib.optionals config.programs.wofi.enable [
+          "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+          "SUPER,d,exec,${wofi} -S run"
+        ]); # ++ (lib.optionals config.programs.password-store.enable [
       # ",Scroll_Lock,exec,${pass-wofi}" # fn+k
       # ",XF86Calculator,exec,${pass-wofi}" # fn+f12
       # "SUPER,semicolon,exec,pass-wofi"
       # ]));
 
-      monitor = map (m: let
-        resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-        position = "${toString m.x}x${toString m.y}";
-	scale = "${toString m.scale}";
-        in
-       "${m.name},${if m.enabled then "${resolution},${position},${scale}" else "disable"}"
+      monitor = map (
+        m: let
+          resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+          position = "${toString m.x}x${toString m.y}";
+          scale = "${toString m.scale}";
+        in "${m.name},${
+          if m.enabled
+          then "${resolution},${position},${scale}"
+          else "disable"
+        }"
       ) (config.monitors);
 
-      workspace = map (m:
-        "${m.name},${m.workspace}"
+      workspace = map (
+        m: "${m.name},${m.workspace}"
       ) (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
     };
     # This is order sensitive, so it has to come here.

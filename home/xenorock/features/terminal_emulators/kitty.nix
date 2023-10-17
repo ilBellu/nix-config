@@ -1,16 +1,16 @@
-{ config, pkgs, ... }:
-
-let
-  inherit (config.colorscheme) colors;
-in
 {
+  config,
+  pkgs,
+  ...
+}: let
+  inherit (config.colorscheme) colors;
+in {
   home = {
-    packages = with pkgs; [ kitty ];
+    packages = with pkgs; [kitty];
     sessionVariables = {
       TERMINAL = "kitty -1";
     };
   };
-
 
   programs.kitty = {
     enable = true;

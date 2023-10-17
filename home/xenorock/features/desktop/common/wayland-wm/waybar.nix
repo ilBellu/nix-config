@@ -1,6 +1,10 @@
-{outputs, config, lib, pkgs, ... }:
-
-let
+{
+  outputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # Dependencies
   cat = "${pkgs.coreutils}/bin/cat";
   cut = "${pkgs.coreutils}/bin/cut";
@@ -23,7 +27,14 @@ let
   wofi = "${pkgs.wofi}/bin/wofi";
 
   # Function to simplify making waybar outputs
-  jsonOutput = name: { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? "" }: "${pkgs.writeShellScriptBin "waybar-${name}" ''
+  jsonOutput = name: {
+    pre ? "",
+    text ? "",
+    tooltip ? "",
+    alt ? "",
+    class ? "",
+    percentage ? "",
+  }: "${pkgs.writeShellScriptBin "waybar-${name}" ''
     set -euo pipefail
     ${pre}
     ${jq} -cn \
@@ -34,61 +45,88 @@ let
       --arg percentage "${percentage}" \
       '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
   ''}/bin/waybar-${name}";
-in
-{
+in {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or  [ ]) ++ [ "-Dexperimental=true" ];
+      mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
     });
     systemd.enable = true;
     settings = {
-      primary = {
-        mode = "dock";
+      bottom = {
         layer = "top";
+        position = "bottom";
+        height = 40;
+        width = 30;
+        margin = "6";
+        fixed-center = true;
+
+        modules-center = ["hyprland/workspaces"];
+      };
+      top = {
+        layer = "top";
+        position = "top";
         height = 40;
         margin = "6";
-        position = "top";
+        mode = "dock";
+        fixed-center = true;
+
         modules-left = [
           "custom/menu"
-        ] ++ (lib.optionals config.wayland.windowManager.sway.enable [
-          "sway/workspaces"
-          "sway/mode"
-        ]) ++ (lib.optionals config.wayland.windowManager.hyprland.enable [
-          "hyprland/workspaces"
-          "hyprland/submap"
-        ]) ++ [
+          "pulseaudio"
           "custom/currentplayer"
           "custom/player"
         ];
 
         modules-center = [
-          "pulseaudio"
-          "battery"
+          # "battery"
+          "cpu"
+          "memory"
+          # "custom/gpu"
           "clock"
-          # "custom/unread-mail"
+          "custom/unread-mail"
           # "custom/gpg-agent"
         ];
 
         modules-right = [
           "network"
-          "custom/tailscale-ping"
+          # "custom/tailscale-ping"
           # "custom/gamemode"
           # TODO: currently broken for some reason
           # "custom/gammastep"
-          "tray"
+          # "tray"
           "custom/hostname"
         ];
+
+        cpu = {
+          format = "  {usage}%";
+        };
+
+        "custom/gpu" = {
+          interval = 5;
+          return-type = "json";
+          exec = jsonOutput "gpu" {
+            text = "$(${cat} /sys/class/drm/card0/device/gpu_busy_percent)";
+            tooltip = "GPU Usage";
+          };
+          format = "󰍛  {}%";
+        };
+
+        memory = {
+          format = "󰒋  {}%";
+          interval = 5;
+        };
 
         clock = {
           interval = 1;
           format = "{:%d/%m %H:%M:%S}";
-          format-alt = "{:%Y-%m-%d %H:%M:%S %z}";
+          format-alt = "{:%d-%m-%Y %H:%M:%S %z}";
           on-click-left = "mode";
           tooltip-format = ''
             <big>{:%Y %B}</big>
             <tt><small>{calendar}</small></tt>'';
         };
+
         pulseaudio = {
           format = "{icon}  {volume}%";
           format-muted = "   0%";
@@ -96,10 +134,11 @@ in
             headphone = "󰋋";
             headset = "󰋎";
             portable = "";
-            default = [ "" "" "" ];
+            default = ["" "" ""];
           };
           on-click = pavucontrol;
         };
+
         idle_inhibitor = {
           format = "{icon}";
           format-icons = {
@@ -107,20 +146,19 @@ in
             deactivated = "󰒲";
           };
         };
+
         battery = {
           bat = "BAT0";
           interval = 10;
-          format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
           onclick = "";
         };
-        "sway/window" = {
-          max-length = 20;
-        };
+
         network = {
           interval = 3;
-          format-wifi = "   {essid}";
+          format-wifi = "   {essid} {ipaddr}/{cidr} : {bandwidthUpBits} : {bandwidthDownBits}";
           format-ethernet = "󰈁 Connected";
           format-disconnected = "";
           tooltip-format = ''
@@ -130,32 +168,34 @@ in
             Down: {bandwidthDownBits}'';
           on-click = "";
         };
+
         "custom/tailscale-ping" = {
           interval = 10;
           return-type = "json";
-          exec =
-            let
-              inherit (builtins) concatStringsSep attrNames;
-              hosts = attrNames outputs.nixosConfigurations;
-              homeMachine = "merope";
-              remoteMachine = "alcyone";
-            in
+          exec = let
+            inherit (builtins) concatStringsSep attrNames;
+            hosts = attrNames outputs.nixosConfigurations;
+            homeMachine = "lust";
+          in
             jsonOutput "tailscale-ping" {
               # Build variables for each host
               pre = ''
                 set -o pipefail
                 ${concatStringsSep "\n" (map (host: ''
-                  ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
-                '') hosts)}
+                    ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
+                  '')
+                  hosts)}
               '';
               # Access a remote machine's and a home machine's ping
-              text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
+              # text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
+              text = "  $ping_${homeMachine}";
               # Show pings from all machines
               tooltip = concatStringsSep "\n" (map (host: "${host}: $ping_${host}") hosts);
             };
           format = "{}";
           on-click = "";
         };
+
         "custom/menu" = {
           return-type = "json";
           exec = jsonOutput "menu" {
@@ -164,91 +204,97 @@ in
           };
           on-click = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
         };
+
         "custom/hostname" = {
           exec = "echo $USER@$HOSTNAME";
         };
-        # "custom/unread-mail" = {
-          # interval = 5;
-          # return-type = "json";
-          # exec = jsonOutput "unread-mail" {
-            # pre = ''
-              # count=$(${find} ~/Mail/*/Inbox/new -type f | ${wc} -l)
-              # if ${pgrep} mbsync &>/dev/null; then
-                # status="syncing"
-              # else if [ "$count" == "0" ]; then
-                # status="read"
-              # else
-                # status="unread"
-              # fi
-              # fi
-            # '';
-            # text = "$count";
-            # alt = "$status";
-          # };
-          # format = "{icon}  ({})";
-          # format-icons = {
-            # "read" = "󰇯";
-            # "unread" = "󰇮";
-            # "syncing" = "󰁪";
-          # };
-        # };
+
+        "custom/unread-mail" = {
+          interval = 5;
+          return-type = "json";
+          exec = jsonOutput "unread-mail" {
+            pre = ''
+              count=$(${find} ~/Mail/*/Inbox/new -type f | ${wc} -l)
+              if ${pgrep} mbsync &>/dev/null; then
+                status="syncing"
+              else if [ "$count" == "0" ]; then
+                status="read"
+              else
+                status="unread"
+              fi
+              fi
+            '';
+            text = "$count";
+            alt = "$status";
+          };
+          format = "{icon}  ({})";
+          format-icons = {
+            "read" = "󰇯";
+            "unread" = "󰇮";
+            "syncing" = "󰁪";
+          };
+        };
+
         # "custom/gpg-agent" = {
-          # interval = 2;
-          # return-type = "json";
-          # exec =
-            # let gpgCmds = import ../../../cli/gpg-commands.nix { inherit pkgs; };
-            # in
-            # jsonOutput "gpg-agent" {
-              # pre = ''status=$(${gpgCmds.isUnlocked} && echo "unlocked" || echo "locked")'';
-              # alt = "$status";
-              # tooltip = "GPG is $status";
-            # };
-          # format = "{icon}";
-          # format-icons = {
-            # "locked" = "";
-            # "unlocked" = "";
-          # };
-          # on-click = "";
+        # interval = 2;
+        # return-type = "json";
+        # exec =
+        # let gpgCmds = import ../../../cli/gpg-commands.nix { inherit pkgs; };
+        # in
+        # jsonOutput "gpg-agent" {
+        # pre = ''status=$(${gpgCmds.isUnlocked} && echo "unlocked" || echo "locked")'';
+        # alt = "$status";
+        # tooltip = "GPG is $status";
         # };
+        # format = "{icon}";
+        # format-icons = {
+        # "locked" = "";
+        # "unlocked" = "";
+        # };
+        # on-click = "";
+        # };
+
         # "custom/gamemode" = {
-          # exec-if = "${gamemoded} --status | ${grep} 'is active' -q";
-          # interval = 2;
-          # return-type = "json";
-          # exec = jsonOutput "gamemode" {
-            # tooltip = "Gamemode is active";
-          # };
-          # format = " ";
+        # exec-if = "${gamemoded} --status | ${grep} 'is active' -q";
+        # interval = 2;
+        # return-type = "json";
+        # exec = jsonOutput "gamemode" {
+        # tooltip = "Gamemode is active";
         # };
+        # format = " ";
+        # };
+
         # "custom/gammastep" = {
-          # interval = 5;
-          # return-type = "json";
-          # exec = jsonOutput "gammastep" {
-            # pre = ''
-              # if unit_status="$(${systemctl} --user is-active gammastep)"; then
-                # status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))"
-              # else
-                # status="$unit_status"
-              # fi
-            # '';
-            # alt = "\${status:-inactive}";
-            # tooltip = "Gammastep is $status";
-          # };
-          # format = "{icon}";
-          # format-icons = {
-            # "activating" = "󰁪 ";
-            # "deactivating" = "󰁪 ";
-            # "inactive" = "? ";
-            # "active (Night)" = " ";
-            # "active (Nighttime)" = " ";
-            # "active (Transition (Night)" = " ";
-            # "active (Transition (Nighttime)" = " ";
-            # "active (Day)" = " ";
-            # "active (Daytime)" = " ";
-            # "active (Transition (Day)" = " ";
-            # "active (Transition (Daytime)" = " ";
-          # };
-          # on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
+        # interval = 5;
+        # return-type = "json";
+        # exec = jsonOutput "gammastep" {
+        # pre = ''
+        # if unit_status="$(${systemctl} --user is-active gammastep)"; then
+        # status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))"
+        # else
+        # status="$unit_status"
+        # fi
+        # '';
+        # alt = "\${status:-inactive}";
+        # tooltip = "Gammastep is $status";
         # };
+        # format = "{icon}";
+        # format-icons = {
+        # "activating" = "󰁪 ";
+        # "deactivating" = "󰁪 ";
+        # "inactive" = "? ";
+        # "active (Night)" = " ";
+        # "active (Nighttime)" = " ";
+        # "active (Transition (Night)" = " ";
+        # "active (Transition (Nighttime)" = " ";
+        # "active (Day)" = " ";
+        # "active (Daytime)" = " ";
+        # "active (Transition (Day)" = " ";
+        # "active (Transition (Daytime)" = " ";
+        # };
+        # on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
+        # };
+
         "custom/currentplayer" = {
           interval = 2;
           return-type = "json";
@@ -282,6 +328,7 @@ in
           on-click = "${playerctld} shift";
           on-click-right = "${playerctld} unshift";
         };
+
         "custom/player" = {
           exec-if = "${playerctl} status";
           exec = ''${playerctl} metadata --format '{"text": "{{title}} - {{artist}}", "alt": "{{status}}", "tooltip": "{{title}} - {{artist}} ({{album}})"}' '';
@@ -297,96 +344,106 @@ in
           on-click = "${playerctl} play-pause";
         };
       };
-
     };
     # Cheatsheet:
     # x -> all sides
     # x y -> vertical, horizontal
     # x y z -> top, horizontal, bottom
     # w x y z -> top, right, bottom, left
-    style = let inherit (config.colorscheme) colors; in /* css */ ''
-      * {
-        font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
-        font-size: 12pt;
-        padding: 0 8px;
-      }
+    style = let
+      inherit (config.colorscheme) colors;
+    in
+      /*
+      css
+      */
+      ''
+             * {
+               font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
+               font-size: 12pt;
+               padding: 0 8px;
+             }
 
-      .modules-right {
-        margin-right: -15px;
-      }
+             window#waybar.top .modules-center {
+               margin-left: -70px;
+             }
 
-      .modules-left {
-        margin-left: -15px;
-      }
+             .modules-right {
+               margin-right: -15px;
+             }
 
-      window#waybar.top {
-        opacity: 0.95;
-        padding: 0;
-        background-color: #${colors.base00};
-        border: 2px solid #${colors.base0C};
-        border-radius: 10px;
-      }
-      window#waybar.bottom {
-        opacity: 0.90;
-        background-color: #${colors.base00};
-        border: 2px solid #${colors.base0C};
-        border-radius: 10px;
-      }
+             .modules-left {
+               margin-left: -15px;
+             }
 
-      window#waybar {
-        color: #${colors.base05};
-      }
+             window#waybar.top {
+               opacity: 0.95;
+               background-color: #${colors.base00};
+               border: 2px solid #${colors.base0C};
+               border-radius: 10px;
+             }
 
-      #workspaces button {
-        background-color: #${colors.base01};
-        color: #${colors.base05};
-        padding: 5px 1px;
-        margin: 3px 0;
-      }
-      #workspaces button.hidden {
-        background-color: #${colors.base00};
-        color: #${colors.base04};
-      }
-      #workspaces button.focused,
-      #workspaces button.active {
-        background-color: #${colors.base0A};
-        color: #${colors.base00};
-      }
+             window#waybar.bottom {
+               opacity: 0.90;
+        margin: 0 0px;
+               background-color: #${colors.base00};
+               border: 2px solid #${colors.base0C};
+               border-radius: 10px;
+             }
 
-      #clock {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 15px;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-radius: 10px;
-      }
+             window#waybar {
+               color: #${colors.base05};
+             }
 
-      #custom-menu {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 22px;
-        margin: 0;
-        border-radius: 10px;
-      }
-      #custom-hostname {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 18px;
-        margin-right: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-radius: 10px;
-      }
-      #custom-currentplayer {
-        padding-right: 0;
-      }
-      #tray {
-        color: #${colors.base05};
-      }
-    '';
+             #workspaces button {
+               background-color: #${colors.base01};
+               color: #${colors.base05};
+               padding: 5px 10px;
+               margin: 3px 0;
+             }
+             #workspaces button.hidden {
+               background-color: #${colors.base00};
+               color: #${colors.base04};
+             }
+             #workspaces button.focused,
+             #workspaces button.active {
+               background-color: #${colors.base0A};
+               color: #${colors.base00};
+             }
+
+             #clock {
+               background-color: #${colors.base0C};
+               color: #${colors.base00};
+               padding-left: 15px;
+               padding-right: 15px;
+               margin-top: 0;
+               margin-bottom: 0;
+               border-radius: 10px;
+             }
+
+             #custom-menu {
+               background-color: #${colors.base0C};
+               color: #${colors.base00};
+               padding-left: 15px;
+               padding-right: 22px;
+               margin: 0;
+               border-radius: 10px;
+             }
+             #custom-hostname {
+               background-color: #${colors.base0C};
+               color: #${colors.base00};
+               padding-left: 15px;
+               padding-right: 18px;
+               margin-right: 0;
+               margin-top: 0;
+               margin-bottom: 0;
+               border-radius: 10px;
+             }
+             #custom-currentplayer {
+               padding-right: 0;
+             }
+             #tray {
+               color: #${colors.base05};
+             }
+      '';
   };
 }

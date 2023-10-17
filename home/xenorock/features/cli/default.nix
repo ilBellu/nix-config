@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   imports = [
     ./bash.nix
     ./bat.nix
@@ -42,6 +42,10 @@
 
     # tly # Tally counter
 
+    busybox # General utilities
+
+    figlet # Fun
+    lolcat # Fun
     # inputs.nh.default # nixos-rebuild and home-manager CLI wrapper
   ];
 }

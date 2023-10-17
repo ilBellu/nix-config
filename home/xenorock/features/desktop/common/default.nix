@@ -6,7 +6,7 @@
     ./vlc.nix
     ./keepassxc.nix
     ./gtk.nix
-    # ./kdeconnect.nix
+    ./kdeconnect.nix
     ./playerctl.nix
     ./qt.nix
     ./sublime-music.nix
