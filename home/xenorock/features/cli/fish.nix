@@ -8,6 +8,7 @@
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
   hasExa = hasPackage "eza";
+  hasBat = config.programs.bat.enable;
   hasNeovim = config.programs.neovim.enable;
   hasEmacs = config.programs.emacs.enable;
   hasNeomutt = config.programs.neomutt.enable;
@@ -37,6 +38,9 @@ in {
 
       ls = mkIf hasExa "eza";
       exa = mkIf hasExa "eza";
+      ll = mkIf hasExa "eza -la";
+
+      cat = mkIf hasBat "bat";
 
       e = mkIf hasEmacs "emacsclient -t";
 

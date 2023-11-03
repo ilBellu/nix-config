@@ -13,7 +13,7 @@ in {
     [
       inputs.nix-colors.homeManagerModule
       ../features/cli
-      ../features/editors/nvim
+      ../features/editors/nvim1
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
   programs = {
