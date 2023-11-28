@@ -7,11 +7,14 @@
     ./global
     ./features/desktop/hyprland
     ./features/browsers/firefox.nix
+    ./features/comunication/discord.nix
     #    inputs.hyprland.homeManagerModules.default
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.tokyo-night-storm;
   wallpaper = outputs.wallpapers.watercolor-beach;
+
+  nixpkgs.config.allowUnfree = true;
 
   monitors = [
     {

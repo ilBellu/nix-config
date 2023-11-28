@@ -1,14 +1,11 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    nil # Nix lsp
-  ];
-
   programs.neovim.plugins = with pkgs.vimPlugins; [
     vim-fugitive # Git integration
     vim-rhubarb # Github integration
 
     vim-sleuth # Detect tabstop and shiftwidth automatically
 
+    lsp-zero-nvim
     {
       plugin = nvim-lspconfig; # LSP configuration & plugins
       type = "lua";

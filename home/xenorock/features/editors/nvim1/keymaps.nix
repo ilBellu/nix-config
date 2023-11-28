@@ -1,6 +1,5 @@
-{lib, ...}: {
+{
   programs.neovim.extraLuaConfig =
-    lib.mkAfter
     /*
     lua
     */
@@ -122,7 +121,7 @@
               swap_previous = {
                 ['<leader>A'] = '@parameter.inner',
               },
-            },
+            }
           },
         }
       end, 0)
@@ -211,6 +210,7 @@
             telemetry = { enable = false },
           },
         },
+        nil
       }
 
       -- Setup neovim lua configuration
