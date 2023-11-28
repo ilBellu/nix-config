@@ -159,7 +159,8 @@ in {
         network = {
           interval = 3;
           format-wifi = "   {essid} {ipaddr}/{cidr} : {bandwidthUpBits} : {bandwidthDownBits}";
-          format-ethernet = "󰈁 Connected";
+          format-ethernet = "󰈁   {essid} {ipaddr}/{cidr} : {bandwidthUpBits} : {bandwidthDownBits}";
+          # format-ethernet = "󰈁 Connected";
           format-disconnected = "";
           tooltip-format = ''
             {ifname}
