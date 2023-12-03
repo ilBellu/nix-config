@@ -13,16 +13,12 @@ in {
     [
       inputs.nix-colors.homeManagerModule
       ../features/cli
-      ../features/editors/nvim1
+      ../features/editors/nixvim_zero
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
   programs = {
     home-manager.enable = true;
     git.enable = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-    };
   };
 
   home = {

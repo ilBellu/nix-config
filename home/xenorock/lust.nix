@@ -8,6 +8,8 @@
     ./features/desktop/hyprland
     ./features/browsers/firefox.nix
     ./features/comunication/discord.nix
+    # ./features/editors/nixvim
+    inputs.nixvim.homeManagerModules.nixvim
     #    inputs.hyprland.homeManagerModules.default
   ];
 

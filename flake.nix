@@ -22,6 +22,11 @@
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -41,7 +46,7 @@
     # formatter.x86_64-linux = pkgs.alejandra;
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
-    homeManagerModules = import ./modules/home-manager;
+    homeManagerModules = import ./modules/home-manager {inherit inputs;};
 
     wallpapers = import ./home/xenorock/wallpapers;
 
