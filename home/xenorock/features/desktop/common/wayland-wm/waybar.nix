@@ -82,7 +82,7 @@ in {
           # "battery"
           "cpu"
           "memory"
-          # "custom/gpu"
+          "custom/gpu"
           "clock"
           "custom/unread-mail"
           # "custom/gpg-agent"
@@ -106,10 +106,10 @@ in {
           interval = 5;
           return-type = "json";
           exec = jsonOutput "gpu" {
-            text = "$(${cat} /sys/class/drm/card0/device/gpu_busy_percent)";
+            text = "$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader)";
             tooltip = "GPU Usage";
           };
-          format = "󰍛  {}%";
+          format = "󰍛  {}";
         };
 
         memory = {

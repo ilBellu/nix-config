@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   programs.nixvim = {
+
     enable = true;
     enableMan = false; # Else it won't build
     # deafultEditor = true;
@@ -67,7 +68,7 @@
           lua
           */
           ''
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
           '';
         servers.nil_ls.enable = true;
         servers.clangd.enable = true;
@@ -117,7 +118,23 @@
           '';
       };
 
-      telescope.enable = true;
+      telescope = {
+        enable = true;
+        extensions.fzy-native = true;
+        keymaps = {
+"<leader>?" = { action = "oldfiles"; desc = "[?] Find recently opened files"; };
+  "<leader><space>" = { action = "oldfiles"; desc = "[ ] Find existing buffers"; };
+  "<leader>/" = { action = "current_buffer_fuzzy_find"; desc = "[/] Fuzzily search in current buffer"; };
+  "<leader>gf" = { action = "git_files"; desc = "Search [G]it [F]iles"; };
+  "<leader>sf" = { action = "find_files"; desc = "[S]earch [F]iles"; };
+  "<leader>sh" = { action = "oldfiles"; desc = "[S]earch [H]elp"; };
+  "<leader>sw" = { action = "oldfiles"; desc = "[S]earch current [W]ord"; };
+  "<leader>sg" = { action = "oldfiles"; desc = "[S]earch by [G]rep"; };
+  "<leader>sd" = { action = "oldfiles"; desc = "[S]earch [D]iagnostics"; };
+  "<leader>sr" = { action = "oldfiles"; desc = "[S]earch [R]esume"; };
+
+        };
+      };
 
       luasnip.enable = true;
 
@@ -132,8 +149,8 @@
         sources = [
           {name = "nvim_lsp";}
           {name = "buffer";}
-          {name = "cmdline";}
-          {name = "path";}
+          # {name = "cmdline";}
+          # {name = "path";}
           {name = "luasnip";} #For luasnip users.
         ];
         mapping = {
@@ -243,39 +260,6 @@
               },
             })
 
-
-          require('telescope').setup {
-            defaults = {
-              mappings = {
-                i = {
-                  ['<C-u>'] = false,
-                  ['<C-d>'] = false,
-                },
-              },
-            },
-          }
-
-          -- Enable telescope fzf native, if installed
-          -- pcall(require('telescope').load_extension, 'fzf')
-
-          -- See `:help telescope.builtin`
-          vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-          vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-          vim.keymap.set('n', '<leader>/', function()
-            -- You can pass additional configuration to telescope to change theme, layout, etc.
-            require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-             winblend = 10,
-              previewer = false,
-            })
-          end, { desc = '[/] Fuzzily search in current buffer' })
-
-          vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-          vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-          vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-          vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-          vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-          vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-          vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
       '';
   };
 }
