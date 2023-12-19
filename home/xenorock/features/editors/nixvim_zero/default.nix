@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  home.sessionVariables.EDITOR = "nvim";
   programs.nixvim = {
     enable = true;
     enableMan = false; # Else it won't build

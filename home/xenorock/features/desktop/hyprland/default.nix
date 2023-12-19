@@ -16,7 +16,6 @@
   wayland.windowManager.hyprland = {
     enable = true;
     # package = pkgs.hyprland.hyprland;
-    enableNvidiaPatches = true; # Nvidia try
     settings = {
       general = {
         gaps_in = 15;
