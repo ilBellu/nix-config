@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   programs.nixvim = {
-
     enable = true;
     enableMan = false; # Else it won't build
     # deafultEditor = true;
@@ -49,18 +48,8 @@
       smartcase = true;
     };
 
-    extraConfigLuaPre =
-      /*
-      lua
-      */
-      ''
-        local has_words_before = function()
-          unpack = unpack or table.unpack
-          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-          return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-        end
-      '';
     plugins = {
+      # LSP
       lsp = {
         enable = true;
         capabilities =
@@ -116,26 +105,16 @@
               vim.lsp.buf.format()
             end, { desc = 'Format current buffer with LSP' })
           '';
-      };
-
-      telescope = {
-        enable = true;
-        extensions.fzy-native = true;
-        keymaps = {
-"<leader>?" = { action = "oldfiles"; desc = "[?] Find recently opened files"; };
-  "<leader><space>" = { action = "oldfiles"; desc = "[ ] Find existing buffers"; };
-  "<leader>/" = { action = "current_buffer_fuzzy_find"; desc = "[/] Fuzzily search in current buffer"; };
-  "<leader>gf" = { action = "git_files"; desc = "Search [G]it [F]iles"; };
-  "<leader>sf" = { action = "find_files"; desc = "[S]earch [F]iles"; };
-  "<leader>sh" = { action = "oldfiles"; desc = "[S]earch [H]elp"; };
-  "<leader>sw" = { action = "oldfiles"; desc = "[S]earch current [W]ord"; };
-  "<leader>sg" = { action = "oldfiles"; desc = "[S]earch by [G]rep"; };
-  "<leader>sd" = { action = "oldfiles"; desc = "[S]earch [D]iagnostics"; };
-  "<leader>sr" = { action = "oldfiles"; desc = "[S]earch [R]esume"; };
-
         };
+
+      nix.enable = true;
+
+      fidget.enable = true;
+      clangd-extensions = {
+        enable = true;
       };
 
+      # Snippets
       luasnip.enable = true;
 
       cmp-nvim-lsp.enable = true;
@@ -143,6 +122,7 @@
       cmp-cmdline.enable = true;
       cmp-path.enable = true;
       cmp_luasnip.enable = true;
+
       nvim-cmp = {
         enable = true;
         snippet.expand = "luasnip";
@@ -166,6 +146,12 @@
               */
               ''
                 function(fallback)
+                  local has_words_before = function()
+                    unpack = unpack or table.unpack
+                    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+                    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                  end
+
                   if cmp.visible() then
                     cmp.select_next_item()
                   elseif require('luasnip').expand_or_jumpable() then
@@ -178,8 +164,7 @@
                 end
               '';
             modes = [
-              "i"
-              "s"
+              "i" "s"
             ];
           };
           "<S-Tab>" = {
@@ -203,6 +188,59 @@
         };
       };
 
+      # Telescope
+      telescope = {
+        enable = true;
+        extensions.fzy-native.enable = true;
+        keymaps = {
+          "<leader>?" = {
+            action = "oldfiles";
+            desc = "[?] Find recently opened files";
+          };
+          "<leader><space>" = {
+            action = "oldfiles";
+            desc = "[ ] Find existing buffers";
+          };
+          "<leader>/" = {
+            action = "current_buffer_fuzzy_find";
+            desc = "[/] Fuzzily search in current buffer";
+          };
+          "<leader>gf" = {
+            action = "git_files";
+            desc = "Search [G]it [F]iles";
+          };
+          "<leader>sf" = {
+            action = "find_files";
+            desc = "[S]earch [F]iles";
+          };
+          "<leader>sh" = {
+            action = "oldfiles";
+            desc = "[S]earch [H]elp";
+          };
+          "<leader>sw" = {
+            action = "oldfiles";
+            desc = "[S]earch current [W]ord";
+          };
+          "<leader>sg" = {
+            action = "oldfiles";
+            desc = "[S]earch by [G]rep";
+          };
+          "<leader>sd" = {
+            action = "oldfiles";
+            desc = "[S]earch [D]iagnostics";
+          };
+          "<leader>sr" = {
+            action = "oldfiles";
+            desc = "[S]earch [R]esume";
+          };
+        };
+      };
+
+      # Git
+      fugitive.enable = true;
+      gitsigns.enable = true;
+
+      # Visual Highlights
       which-key.enable = true;
 
       treesitter = {
@@ -219,13 +257,10 @@
           };
         };
       };
-      lualine.enable = true;
-      nix.enable = true;
 
-      fidget.enable = true;
-      clangd-extensions = {
-        enable = true;
-      };
+      lualine.enable = true;
+
+      trouble.enable = true;
     };
     extraConfigLuaPost =
       /*
