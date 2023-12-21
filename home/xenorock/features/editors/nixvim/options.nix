@@ -1,20 +1,35 @@
 {
-  # Appearance
   number = true;
   relativenumber = true;
-  colorcolumn = true;
-  cursorline = true;
-  wrap = false;
-  splitright = true;
-  # Tabs & indentation
+
+  tabstop = 4;
+  softtabstop = 4;
+  shiftwidth = 4;
+  expandtab = true;
+
   smarttab = true;
   autoindent = true;
   smartindent = true;
-  # Search path
-  path = ".,/usr/include,**";
-  wildmenu = true;
-  hlsearch = true;
+
+  wrap = false;
+
+  swapfile = false;
+  backup = false;
+  undodir = "/home/xenorock/.nvim/undodir";
+  undofile = true;
+
+  hlsearch = false;
   incsearch = true;
-  ignorecase = true; # Search ignores cases
-  smartcase = true; # Unless it has a capital letter
+  wildmenu = true;
+  ignorecase = true;
+  smartcase = true;
+
+  termguicolors = true;
+
+  scrolloff = 8;
+  signcolumn = "yes";
+  foldenable = false;
+
+  updatetime = 50;
+  colorcolumn = "80";
 }

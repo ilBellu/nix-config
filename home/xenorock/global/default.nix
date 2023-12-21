@@ -13,7 +13,6 @@ in {
     [
       inputs.nix-colors.homeManagerModule
       ../features/cli
-      ../features/editors/nixvim_zero
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
   programs = {
@@ -29,7 +28,7 @@ in {
 
   systemd.user.startServices = "sd-switch";
 
-  colorscheme = lib.mkDefault colorSchemes.dracula;
+  colorscheme = lib.mkDefault colorSchemes.onedark;
   home.file.".colorscheme".text = config.colorscheme.slug;
 
   wallpaper = let

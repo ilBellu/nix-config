@@ -17,6 +17,7 @@
     # ./ssh.nix
     ./starship.nix
     # ./xpo.nix
+    ../editors/nixvim
   ];
   home.packages = with pkgs; [
     # comma # Install and run programs by sticking a , before them

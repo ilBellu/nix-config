@@ -13,8 +13,8 @@
     #    inputs.hyprland.homeManagerModules.default
   ];
 
-  colorscheme = inputs.nix-colors.colorschemes.tokyo-night-storm;
-  wallpaper = outputs.wallpapers.watercolor-beach;
+  colorscheme = inputs.nix-colors.colorschemes.tokyo-city-terminal-dark;
+  wallpaper = outputs.wallpapers.aurora-borealis-water-mountain;
 
   nixpkgs.config.allowUnfree = true;
 
