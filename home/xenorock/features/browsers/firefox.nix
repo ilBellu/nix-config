@@ -100,6 +100,26 @@
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = ["@nixw"];
         };
+        "Github Repositories" = {
+          urls = [
+            {
+              template = "https://github.com/search?q={searchTerms}&type=repositories";
+            }
+          ];
+          iconUpdateURL = "https://github.githubassets.com/favicons/favicon-dark.svg";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = ["@ghr"];
+        };
+        "Github Users" = {
+          urls = [
+            {
+              template = "https://github.com/search?q={searchTerms}&type=users";
+            }
+          ];
+          iconUpdateURL = "https://github.githubassets.com/favicons/favicon-dark.svg";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = ["@ghu"];
+        };
         "Google".metaData.alias = "@g";
       };
       search.order = ["DuckDuckGo" "google"];
