@@ -29,6 +29,7 @@
       };
       input = {
         kb_layout = "us";
+        # kb_layout = "it";
         touchpad.disable_while_typing = false;
       };
       dwindle.split_width_multiplier = 1.35;

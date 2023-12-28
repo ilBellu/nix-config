@@ -7,7 +7,7 @@
   inherit (lib) mkIf;
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
-  hasExa = hasPackage "eza";
+  hasEza = hasPackage "eza";
   hasBat = config.programs.bat.enable;
   hasNeovim = config.programs.neovim.enable;
   hasEmacs = config.programs.emacs.enable;
@@ -36,9 +36,9 @@ in {
       hm = "home-manager --flake .";
       hms = "home-manager --flake . switch";
 
-      ls = mkIf hasExa "eza";
-      exa = mkIf hasExa "eza";
-      ll = mkIf hasExa "eza -la";
+      ls = mkIf hasEza "eza";
+      exa = mkIf hasEza "eza";
+      ll = mkIf hasEza "eza -la";
 
       cat = mkIf hasBat "bat";
 

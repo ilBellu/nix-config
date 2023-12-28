@@ -12,6 +12,8 @@
       system-features = ["kvm" "big-parallel"];
       # flake-registry = ""; # Disable global flake registry
     };
+
+    # Nix garbage collector
     gc = lib.mkDefault {
       automatic = true;
       dates = "weekly";
