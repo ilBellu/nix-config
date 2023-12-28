@@ -23,6 +23,7 @@
   };
 
   boot = {
+    supportedFilesystems = [ "ntfs" ];
     blacklistedKernelModules = lib.mkDefault ["i915"]; # Nvidia try
     kernelParams = lib.mkDefault ["i915.modeset=0"]; # Nvidia try
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
