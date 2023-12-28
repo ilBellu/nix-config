@@ -18,13 +18,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nil = {
-      url = "github:oxalica/nil";
+    # Module to configure nvim within nix via home-manager
+    nixvim = {
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
+    # Nix language server
+    nil = {
+      url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
