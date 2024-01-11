@@ -24,7 +24,7 @@ Note that it's done using [Nix flakes](https://nixos.wiki/wiki/Flakes).
     > Entrypoint for home-manager custom modules.
     - `HOSTNAME.nix`: Defines the home-manager config for user@HOSTNAME.
 
-Proper Documentation, Structure graph, Entrypoints, Bootstrapping, and secret management are on their way. Meanwhile I'm including comments in every file both for my future self and anyone who decides to fork this repo
+Proper Documentation, Structure graph, Entrypoints, Bootstrapping, and secret management are on their way. Meanwhile I'm including comments in every file both for my future self and anyone who decides to fork this repo.
 
 I am particularly proud of my [NeoVim config](https://github.com/ilBellu/nix-config/tree/main/home/xenorock/features/editors/nixvim).
 It is not actually impressive in terms of being an IDE as I am still working on it and will add/refine keybinds and plugins when I need them.
