@@ -18,7 +18,7 @@
       automatic = true;
       dates = "weekly";
       # Keep the last 20 generations
-      options = "--delete-older-than +10";
+      options = "--delete-older-than +7";
     };
 
     # Add each flake input as a registry
