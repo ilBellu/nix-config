@@ -5,6 +5,8 @@
     ../common/global
 
     ../common/users/xenorock
+
+    ../common/optional/xdg-portal.nix
   ];
 
   networking = {
