@@ -6,21 +6,19 @@
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
   users = {
-    mutableUsers = true; # Eventually set to false
+    mutableUsers = false;
     motd = "Veni, Vidi, Vici";
     users.xenorock = {
       isNormalUser = true;
       shell = pkgs.fish;
-      hashedPasswordFile = "/password";
+      hashedPasswordFile = "/password"; # TODO: Eventually move to nix-sops
       extraGroups =
         [
           "wheel"
           "video"
           "audio"
-          "networkmanager"
         ]
         ++ ifTheyExist [
-          "minecraft"
           "network"
           "wireshark"
           "i2c"
@@ -29,12 +27,9 @@ in {
           "podman"
           "git"
           "libvirtd"
-          "deluge"
         ];
     };
   };
-  # home-manager.users.misterio = import ../../../../home/misterio/${config.networking.hostName}.nix;
 
-  services.geoclue2.enable = true;
   security.pam.services = {swaylock = {};};
 }
