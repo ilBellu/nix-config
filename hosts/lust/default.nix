@@ -20,7 +20,7 @@
   };
 
   programs = {
-    # dconf.enable = true;
+    dconf.enable = true;
     # adb.enable = true; # Not needed for now
     kdeconnect.enable = true;
   };
