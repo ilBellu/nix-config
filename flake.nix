@@ -48,14 +48,15 @@
     # formatter.x86_64-linux = pkgs.alejandra;
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
-    homeManagerModules = import ./modules/home-manager {inherit inputs;};
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
 
     wallpapers = import ./home/xenorock/wallpapers;
 
     nixosConfigurations = {
       "lust" = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs outputs;};
         modules = [./hosts/lust];
       };
     };

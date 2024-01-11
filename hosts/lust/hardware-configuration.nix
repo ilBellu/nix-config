@@ -10,36 +10,30 @@
 }: {
   imports = [
     # inputs.hardware.nixosModules.common-cpu-intel
-    # inputs.hardware.nixosModules.common-gpu-nvidia # Nvidia try
     inputs.hardware.nixosModules.common-pc-ssd
     ../common/optional/systemd-boot.nix
   ];
 
-  services.xserver.videoDrivers = lib.mkDefault ["nvidia"]; # Nvidia try
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable; # Nvidia try
-    modesetting.enable = true; # Nvidia try
-    nvidiaSettings = true; # Nvidia try
+  nvidia-tweaks = {
+    enable = true;
+    cpu = "intel";
   };
 
   boot = {
     supportedFilesystems = [ "ntfs" ];
-    blacklistedKernelModules = lib.mkDefault ["i915"]; # Nvidia try
-    kernelParams = lib.mkDefault ["i915.modeset=0"]; # Nvidia try
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
-    extraModulePackages = [config.boot.kernelPackages.nvidia_x11]; # Nvidia try
     initrd = {
       availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-      kernelModules = ["nvidia" "kvm-intel"]; # Nvidia try
+      kernelModules = ["kvm-intel"];
     };
   };
 
-  # Enables redistributable firmware to make
+  # Enables redistributable firmware to allow updating microcode
   hardware = {
     enableRedistributableFirmware = true;
     opengl = {
       enable = true;
-      extraPackages = with pkgs; [vaapiVdpau];
+      # extraPackages = with pkgs; [vaapiVdpau];
       driSupport = true;
       driSupport32Bit = true;
     };
@@ -61,5 +55,6 @@
 
   nixpkgs.hostPlatform = lib.mkForce "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
+  # Update microcode if enableRedistributableFirmware is enabled
   hardware.cpu.intel.updateMicrocode = lib.mkForce config.hardware.enableRedistributableFirmware;
 }

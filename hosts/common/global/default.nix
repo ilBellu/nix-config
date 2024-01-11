@@ -1,4 +1,4 @@
-{...}: {
+{outputs, ...}: {
   imports = [
     ./locale.nix
     ./pipewire.nix
@@ -6,7 +6,7 @@
     ./nix.nix
     ./tailscale.nix
     ./fish.nix
-  ];
+  ] ++ (builtins.attrValues outputs.nixosModules);
 
   environment.profileRelativeSessionVariables = {
     QT_PLUGIN_PATH = ["/lib/qt-6/plugins"];
