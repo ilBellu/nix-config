@@ -15,12 +15,9 @@
     # Configure network proxy if necessary
     # networking.proxy.default = "http://user:password@proxy:port/";
     # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-    nameservers = ["100.100.100.100" "1.1.1.1" "8.8.8.8"];
+    nameservers = ["100.100.100.100" "1.1.1.1" "8.8.8.8"]; # Use tailscale dns if available
     search = ["tail2df32.ts.net"];
   };
-
-  nixpkgs.config.allowUnfree = true; # Nvidia try
-
 
   programs = {
     # dconf.enable = true;

@@ -5,7 +5,7 @@ in
   {
     # See: https://nixos.wiki/wiki/Nvidia
     options.nvidia-tweaks = {
-      enable = mkEnableOption (lib.mdDoc "Enable nvidia drivers and tweaks to hopefully make them work (nvidia sucks)");
+      enable = mkEnableOption (lib.mdDoc "Enable nvidia drivers and tweaks to hopefully make them work (nvidia sucks). WARNING: This module enables unfree software");
 
       cpu = mkOption {
         type = types.enum [ "intel" "amd" ];
@@ -20,10 +20,12 @@ in
     };
 
     config = mkIf cfg.enable {
-      services.xserver.videoDrivers = mkDefault ["nvidia"]; #
+      nixpkgs.config.allowUnfree = true;
+
+      services.xserver.videoDrivers = mkDefault ["nvidia"]; # Used to tell the system which graphics backend to use even on wayland
 
       hardware = {
-        opengl.extraPackages = with pkgs; mkDefault [vaapiVdpau];
+        opengl.extraPackages = with pkgs; mkDefault [vaapiVdpau]; # Nvidia opengl package for hardware acceleration
 
         nvidia = {
           # Read from config the value of kernelPackages so the right package for the kernel in use will be installed
