@@ -1,3 +1,3 @@
-{lib, ...}: {
-  boot.initrd.systemd.enable = lib.mkDefault true;
+{
+  boot.initrd.systemd.enable = true;
 }

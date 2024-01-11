@@ -1,12 +1,12 @@
-{lib, ...}: {
-  security.rtkit.enable = lib.mkDefault true;
-  hardware.pulseaudio.enable = lib.mkForce false;
+{
+  security.rtkit.enable = true;
+  hardware.pulseaudio.enable = false; # Ensure pulseaudio isn't enabled
   services.pipewire = {
-    enable = lib.mkDefault true;
-    alsa = lib.mkDefault {
+    enable = true;
+    alsa = {
       enable = true;
       support32Bit = true;
     };
-    pulse.enable = lib.mkDefault true;
+    pulse.enable = true;
   };
 }

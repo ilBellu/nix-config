@@ -6,13 +6,11 @@
     ./nix.nix
     ./tailscale.nix
     ./fish.nix
-  ] ++ (builtins.attrValues outputs.nixosModules);
+  ] ++ (builtins.attrValues outputs.nixosModules); # Entry point for custom nixos modules
 
   environment.profileRelativeSessionVariables = {
     QT_PLUGIN_PATH = ["/lib/qt-6/plugins"];
   };
-
-  hardware.enableRedistributableFirmware = true;
 
   # Increase open file limit for sudoers
   security.pam.loginLimits = [

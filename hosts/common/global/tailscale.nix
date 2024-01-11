@@ -1,7 +1,7 @@
-{lib, ...}: {
-  services.tailscale.enable = lib.mkDefault true;
+{
+  services.tailscale.enable = true;
 
-  networking.firewall = lib.mkDefault {
+  networking.firewall = {
     checkReversePath = "loose";
     allowedUDPPorts = [41641]; # Facilitate firewall punching
     allowedUDPPortRanges = [
