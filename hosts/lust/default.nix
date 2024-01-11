@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   imports = [
     ./hardware-configuration.nix
 
@@ -30,14 +30,6 @@
   fonts.enableDefaultPackages = true; # TODO: check if font module actually works and fix nerdfonts not displaying in firefox
 
   services.dbus.implementation = "broker"; # TODO: maybe move to global
-
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [xdg-desktop-portal-hyprland xdg-desktop-portal-gtk]; # Gtk portal is added for filepicker
-    # Since portal implementation changed we need to define the portals to use in order or use * for lexicographical order
-    config.common.default = [ "hyprland" "wlr" "gtk" ];
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
