@@ -8,7 +8,6 @@
     ./features/desktop/hyprland
     ./features/browsers/firefox.nix
     ./features/comunication/discord.nix
-    # ./features/editors/nixvim
     inputs.nixvim.homeManagerModules.nixvim
     #    inputs.hyprland.homeManagerModules.default
   ];
@@ -20,6 +19,7 @@
 
   monitors = [
     {
+      # Desktop
       name = "DP-1";
       width = 3840;
       height = 2160;
@@ -31,6 +31,7 @@
       enabled = true;
     }
     {
+      # Tv
       name = "HDMI-A-1";
       primary = true;
       width = 1920;
