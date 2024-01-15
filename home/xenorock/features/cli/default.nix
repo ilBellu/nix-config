@@ -1,28 +1,25 @@
 {pkgs, ...}: {
   imports = [
     ./bash.nix
-    ./bat.nix
-    # ./direnv.nix
-    ./fish.nix
+    ./bat.nix # Better cat
+    ./direnv.nix # Auto source flake when entering directory: loads environment variables, shells and secrets
+    ./fish.nix # Better shell
     # ./gh.nix
-    # ./git.nix
+    ./git.nix
     # ./gpg.nix
     # ./jujutsu.nix
     # ./lyrics.nix
     # ./nix-index.nix
     ./pfetch.nix
-    ./ranger.nix
+    ./ranger.nix # TUI file explorer
     ./screen.nix
     # ./shellcolor.nix
     # ./ssh.nix
-    ./starship.nix
+    ./starship.nix # Terminal prompt
     # ./xpo.nix
-    ../editors/nixvim
+    ../editors/nixvim # Nvim
   ];
   home.packages = with pkgs; [
-    # comma # Install and run programs by sticking a , before them
-    # distrobox # Nice escape hatch, integrates docker images with my environment
-
     bc # Calculator
     bottom # System viewer
     # ncdu # TUI disk usage
@@ -32,11 +29,9 @@
     httpie # Better curl
     diffsitter # Better diff
     jq # JSON pretty printer and manipulator
-    # trekscii # Cute startrek cli printer
-    timer # To help with my ADHD paralysis
 
-    nil # Nix LSP
-    nixfmt # Nix formatter
+    # nil # Nix LSP
+    # nixfmt # Nix formatter
     # nix-inspect # See which pkgs are in your PATH
 
     ltex-ls # Spell checking LSP
