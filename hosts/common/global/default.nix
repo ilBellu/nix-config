@@ -1,12 +1,14 @@
 {outputs, ...}: {
-  imports = [
-    ./locale.nix
-    ./pipewire.nix
-    ./systemd-initrd.nix
-    ./nix.nix
-    ./tailscale.nix
-    ./fish.nix
-  ] ++ (builtins.attrValues outputs.nixosModules); # Entry point for custom nixos modules
+  imports =
+    [
+      ./locale.nix
+      ./pipewire.nix
+      ./systemd-initrd.nix
+      ./nix.nix
+      ./tailscale.nix
+      ./fish.nix
+    ]
+    ++ (builtins.attrValues outputs.nixosModules); # Entry point for custom nixos modules
 
   environment.profileRelativeSessionVariables = {
     QT_PLUGIN_PATH = ["/lib/qt-6/plugins"];

@@ -18,7 +18,7 @@
 
   boot = {
     # Access usbs formatted by windows
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = ["ntfs"];
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     initrd = {
       availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
