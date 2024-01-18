@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-index-database = {
+      url = "github:Mic92:/nix-index-database";
+      inputs.nixpkgs.folows = "nixpkgs";
+    };
+
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +34,8 @@
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+
   };
 
   outputs = {
@@ -39,19 +46,16 @@
   } @ inputs: let
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
-    # current_system = "x86_64-linux";
     systems = ["x86_64-linux"];
-    # pkgs = nixpkgs.legacyPackages.${current_system};
     pkgsFor = lib.genAttrs systems (system: nixpkgs.legacyPackages.${system});
     forEachSystem = func: lib.genAttrs systems (system: func pkgsFor.${system});
   in {
-    # formatter.x86_64-linux = pkgs.alejandra;
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
 
-    wallpapers = import ./home/xenorock/wallpapers;
+    packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
 
     nixosConfigurations = {
       "lust" = lib.nixosSystem {

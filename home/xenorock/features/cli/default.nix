@@ -8,12 +8,11 @@
     ./git.nix
     # ./gpg.nix
     # ./jujutsu.nix
-    # ./lyrics.nix
-    # ./nix-index.nix
+    ./nix-index.nix
     ./pfetch.nix
     ./ranger.nix # TUI file explorer
     ./screen.nix # Usefull for ssh multitasking
-    # ./shellcolor.nix
+    ./shellcolor.nix # Utility to change running terminal colorscheme
     # ./ssh.nix
     ./starship.nix # Terminal prompt
     # ./xpo.nix
