@@ -12,7 +12,7 @@
   ];
 
   colorscheme = colorSchemes.tokyo-city-terminal-dark;
-  wallpaper = outputs.pkgs.wallpapers.aurora-borealis-water-mountain;
+  wallpaper = outputs.packages.wallpapers.aurora-borealis-water-mountain;
 
   nixpkgs.config.allowUnfree = true;
 
