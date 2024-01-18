@@ -15,7 +15,7 @@
 
     nix-index-database = {
       url = "github:Mic92:/nix-index-database";
-      inputs.nixpkgs.folows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland = {
