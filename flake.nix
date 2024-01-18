@@ -50,12 +50,13 @@
     pkgsFor = lib.genAttrs systems (system: nixpkgs.legacyPackages.${system});
     forEachSystem = func: lib.genAttrs systems (system: func pkgsFor.${system});
   in {
-    formatter = forEachSystem (pkgs: pkgs.alejandra);
-
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
 
+    overlays = import ./overlays { inherit inputs outputs; };
+
     packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
+    formatter = forEachSystem (pkgs: pkgs.alejandra);
 
     nixosConfigurations = {
       "lust" = lib.nixosSystem {
