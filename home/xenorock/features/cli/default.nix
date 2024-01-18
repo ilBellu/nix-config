@@ -4,7 +4,7 @@
     ./bat.nix # Better cat
     ./direnv.nix # Auto source flake when entering directory: loads environment variables, shells and secrets
     ./fish.nix # Better shell
-    # ./gh.nix
+    ./gh.nix
     ./git.nix
     # ./gpg.nix
     # ./jujutsu.nix
@@ -12,7 +12,7 @@
     # ./nix-index.nix
     ./pfetch.nix
     ./ranger.nix # TUI file explorer
-    ./screen.nix
+    ./screen.nix # Usefull for ssh multitasking
     # ./shellcolor.nix
     # ./ssh.nix
     ./starship.nix # Terminal prompt

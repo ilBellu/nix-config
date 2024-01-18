@@ -50,20 +50,6 @@
         symbol = " ";
         style = "bold red";
       };
-      # custom = {
-      # nix_inspect = let
-      # excluded = [
-      # "kitty" "imagemagick" "ncurses" "user-environment" "pciutils" "binutils-wrapper"
-      # ];
-      # in {
-      # disabled = false;
-      # when = "test -z $IN_NIX_SHELL";
-      # command = "${(lib.getExe pkgs.nix-inspect)} ${(lib.concatStringsSep " " excluded)}";
-      # format = "[($output <- )$symbol]($style) ";
-      # symbol = " ";
-      # style = "bold blue";
-      # };
-      # };
 
       character = {
         error_symbol = "[~~>](bold red)";

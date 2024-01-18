@@ -9,7 +9,6 @@
     ./features/browsers/firefox.nix
     ./features/comunication/discord.nix
     inputs.nixvim.homeManagerModules.nixvim
-    #    inputs.hyprland.homeManagerModules.default
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.tokyo-city-terminal-dark;
