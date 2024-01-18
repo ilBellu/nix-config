@@ -2,7 +2,7 @@
   inputs,
   outputs,
   ...
-}: {
+}:  let inherit (inputs.nix-colors) colorSchemes; in {
   imports = [
     ./global
     ./features/desktop/hyprland
@@ -11,8 +11,8 @@
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
-  colorscheme = inputs.nix-colors.colorschemes.tokyo-city-terminal-dark;
-  wallpaper = outputs.wallpapers.aurora-borealis-water-mountain;
+  colorscheme = colorSchemes.tokyo-city-terminal-dark;
+  wallpaper = outputs.pkgs.wallpapers.aurora-borealis-water-mountain;
 
   nixpkgs.config.allowUnfree = true;
 
