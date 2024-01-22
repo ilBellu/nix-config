@@ -35,6 +35,11 @@
         '';
     };
   servers.nil_ls.enable = true; # Nix language server (Requires the code above to expose additional capabilities)
+  servers.rust-analyzer = {
+    enable = true; # Rust language server
+    installCargo = true;
+    installRustc = true;
+  };
 
   # TODO: Check if in the future the attribute set will support specifying a description for the keymap
   # TODO: Check if in the future the attribute set will support specifying a custom command hence removing the need for the code in onAttach
