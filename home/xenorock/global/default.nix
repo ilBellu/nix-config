@@ -12,6 +12,7 @@ in {
   imports =
     [
       inputs.nix-colors.homeManagerModule
+      inputs.nix-index-database.hmModules.nix-index
       ../features/cli
     ]
     ++ (builtins.attrValues outputs.homeManagerModules); # Entry point for custom homeManager modules
