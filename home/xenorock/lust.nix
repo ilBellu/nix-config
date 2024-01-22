@@ -1,8 +1,10 @@
 {
   inputs,
-  outputs,
+  pkgs,
   ...
-}:  let inherit (inputs.nix-colors) colorSchemes; in {
+}: let
+  inherit (inputs.nix-colors) colorSchemes;
+in {
   imports = [
     ./global
     ./features/desktop/hyprland
@@ -12,7 +14,7 @@
   ];
 
   colorscheme = colorSchemes.tokyo-city-terminal-dark;
-  wallpaper = outputs.packages.wallpapers.aurora-borealis-water-mountain;
+  wallpaper = pkgs.wallpapers.aurora-borealis-water-mountain;
 
   nixpkgs.config.allowUnfree = true;
 

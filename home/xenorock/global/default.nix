@@ -16,6 +16,14 @@ in {
     ]
     ++ (builtins.attrValues outputs.homeManagerModules); # Entry point for custom homeManager modules
 
+  nixpkgs = {
+    overlays = builtins.attrValues outputs.overlays; # Entry point for home-manager overlays.
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = _: true;
+    };
+  };
+
   # Needed for homeManager and flakes to work
   programs = {
     home-manager.enable = true;

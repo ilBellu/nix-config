@@ -10,6 +10,10 @@
     ]
     ++ (builtins.attrValues outputs.nixosModules); # Entry point for custom nixos modules
 
+  nixpkgs = {
+    overlays = builtins.attrValues outputs.overlays; # Entry point for system overlays
+  };
+
   environment.profileRelativeSessionVariables = {
     QT_PLUGIN_PATH = ["/lib/qt-6/plugins"];
   };
