@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Misterio77 nix-config
+    misterio77-nix-config = {
+      url = "github:Misterio77/nix-config";
+    };
+
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,7 +57,7 @@
     homeManagerModules = import ./modules/home-manager;
     templates = import ./templates;
 
-    overlays = import ./overlays {inherit inputs outputs;};
+    overlays = inputs.misterio77-nix-config.outputs.overlays // import ./overlays {inherit inputs outputs;};
 
     packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
     formatter = forEachSystem (pkgs: pkgs.alejandra);
