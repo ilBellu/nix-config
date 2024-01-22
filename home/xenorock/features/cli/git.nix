@@ -1,4 +1,4 @@
-{ pkgs, ... }:{
+{pkgs, ...}: {
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
@@ -14,6 +14,6 @@
       # commit.gpgSign = true; # TODO: create a gpg signing key
     };
     lfs.enable = true;
-    ignores = [ "result" ];
+    ignores = ["result"];
   };
 }
