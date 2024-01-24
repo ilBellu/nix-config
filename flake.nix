@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Misterio77 nix-config
+    misterio77-nix-config = {
+      url = "github:Misterio77/nix-config";
+    };
+
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,6 +45,7 @@
     self,
     nixpkgs,
     home-manager,
+    misterio77-nix-config,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -49,12 +55,12 @@
     forEachSystem = func: lib.genAttrs systems (system: func pkgsFor.${system});
   in {
     nixosModules = import ./modules/nixos;
-    homeManagerModules = import ./modules/home-manager;
+    homeManagerModules = misterio77-nix-config.homeManagerModules // import ./modules/home-manager;
     templates = import ./templates;
 
-    overlays = import ./overlays {inherit inputs outputs;};
+    overlays = import ./overlays {inherit inputs outputs;} // misterio77-nix-config.overlays;
 
-    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
+    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;}) // misterio77-nix-config.packages;
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
     nixosConfigurations = {

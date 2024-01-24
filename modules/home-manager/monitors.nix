@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}: let
+# Slighly modified version of https://github.com/Misterio77/nix-config/blob/main/modules/home-manager/monitors.nix
+{ lib, config, ... }:
+let
   inherit (lib) mkOption types;
-  cfg = config.monitors;
-in {
+in
+{
   options.monitors = mkOption {
     type = types.listOf (types.submodule {
       options = {
@@ -25,13 +23,13 @@ in {
           type = types.int;
           example = 1080;
         };
-        refreshRate = mkOption {
-          type = types.float;
-          default = 60;
-        };
         scale = mkOption {
           type = types.float;
           default = 1.5;
+        };
+        refreshRate = mkOption {
+          type = types.float;
+          default = 60;
         };
         x = mkOption {
           type = types.int;
@@ -51,16 +49,13 @@ in {
         };
       };
     });
-    default = [];
+    default = [ ];
   };
   config = {
-    assertions = [
-      {
-        assertion =
-          ((lib.length config.monitors) != 0)
-          -> ((lib.length (lib.filter (m: m.primary) config.monitors)) == 1);
-        message = "Exactly one monitor must be set to primary.";
-      }
-    ];
+    assertions = [{
+      assertion = ((lib.length config.monitors) != 0) ->
+        ((lib.length (lib.filter (m: m.primary) config.monitors)) == 1);
+      message = "Exactly one monitor must be set to primary.";
+    }];
   };
 }
