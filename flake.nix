@@ -90,7 +90,10 @@
       "xenorock@lust" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.x86_64-linux;
         modules = [./home/xenorock/lust.nix];
-        extraSpecialArgs = {inherit inputs outputs; hostName = "lust";};
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          hostName = "lust";
+        };
       };
     };
   };
