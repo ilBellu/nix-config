@@ -4,12 +4,12 @@
     ./bat.nix # Better cat
     ./direnv.nix # Auto source flake when entering directory: loads environment variables, shells and secrets
     ./fish.nix # Better shell
-    ./gh.nix
+    ./gh.nix # Github CLI
     ./git.nix
     # ./gpg.nix
     # ./jujutsu.nix
     ./nix-index.nix
-    ./pfetch.nix
+    ./pfetch.nix # Better neofetch
     ./ranger.nix # TUI file explorer
     ./screen.nix # Usefull for ssh multitasking
     ./shellcolor.nix # Utility to change running terminal colorscheme
@@ -19,6 +19,7 @@
     ../editors/nixvim # Nvim
   ];
   home.packages = with pkgs; [
+    comma # Nix command to run programs without installing them by preceding them with a comma
     bc # Calculator
     bottom # System viewer
     # ncdu # TUI disk usage
@@ -29,18 +30,9 @@
     diffsitter # Better diff
     jq # JSON pretty printer and manipulator
 
-    # nil # Nix LSP
-    # nixfmt # Nix formatter
-    # nix-inspect # See which pkgs are in your PATH
-
-    ltex-ls # Spell checking LSP
-
-    # tly # Tally counter
-
     busybox # General utilities
 
     figlet # Fun
     lolcat # Fun
-    # inputs.nh.default # nixos-rebuild and home-manager CLI wrapper
   ];
 }
