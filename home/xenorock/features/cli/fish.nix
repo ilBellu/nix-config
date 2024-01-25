@@ -2,26 +2,27 @@
   lib,
   pkgs,
   config,
+  hostName,
   ...
 }: let
   inherit (lib) mkIf;
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
   hasEza = hasPackage "eza";
+  ezaDefault = "eza --group-directories-first --total-size --changed --git --git-repos --color --icons";
   hasBat = config.programs.bat.enable;
   hasNeovim = config.programs.neovim.enable;
-  hasEmacs = config.programs.emacs.enable;
   hasNeomutt = config.programs.neomutt.enable;
-  # hasShellColor = config.programs.shellcolor.enable;
+  hasShellColor = config.programs.shellcolor.enable;
   hasKitty = config.programs.kitty.enable;
-  # shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
+  shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
+  username = config.home.username;
 in {
   home.sessionVariables.PAGER = mkIf hasBat "bat";
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
-      jqless = "jq -C | less -r";
-
+      # Nix
       n = "nix";
       nd = "nix develop -c $SHELL";
       ns = "nix shell";
@@ -29,21 +30,21 @@ in {
       nb = "nix build";
       nbn = "nix build nixpkgs#";
       nf = "nix flake";
+      nfu = "nix flake update";
 
-      nr = "nixos-rebuild --flake .";
-      nrs = "nixos-rebuild --flake . switch";
-      snr = "sudo nixos-rebuild --flake .";
-      snrs = "sudo nixos-rebuild --flake . switch";
-      hm = "home-manager --flake .";
-      hms = "home-manager --flake . switch";
+      # NixOs and home-manager
+      nr = "nixos-rebuild --flake ./#${hostName}";
+      nrs = "nixos-rebuild --flake ./#${hostName} switch --use-remote-sudo";
+      hm = "home-manager --flake .#${username}@${hostName}";
+      hms = "home-manager --flake .#${username}@${hostName} switch";
 
-      ls = mkIf hasEza "eza";
-      exa = mkIf hasEza "eza";
-      ll = mkIf hasEza "eza -la";
+      # ls improvements
+      ls = mkIf hasEza ezaDefault;
+      exa = mkIf hasEza ezaDefault;
+      ll = mkIf hasEza "${ezaDefault} -l";
+      la = mkIf hasEza "${ezaDefault} -la";
 
       cat = mkIf hasBat "bat";
-
-      e = mkIf hasEmacs "emacsclient -t";
 
       vrg = mkIf (hasNeomutt && hasRipgrep) "nvimrg";
       vim = mkIf hasNeovim "nvim";
@@ -66,43 +67,36 @@ in {
       # Grep using ripgrep and pass to nvim
       nvimrg = mkIf (hasNeomutt && hasRipgrep) "nvim -q (rg --vimgrep $argv | psub)";
       # Integrate ssh with shellcolord
-      # ssh = mkIf hasShellColor ''
-      # ${shellcolor} disable $fish_pid
-      # Check if kitty is available
-      # if set -q KITTY_PID && set -q KITTY_WINDOW_ID && type -q -f kitty
-      # kitty +kitten ssh $argv
-      # else
-      # command ssh $argv
-      # end
-      # ${shellcolor} enable $fish_pid
-      # ${shellcolor} apply $fish_pid
-      # '';
+      ssh = mkIf hasShellColor /* fish */ ''
+        ${shellcolor} disable $fish_pid
+        # Check if kitty is available
+        if set -q KITTY_PID && set -q KITTY_WINDOW_ID && type -q -f kitty
+          kitty +kitten ssh $argv
+        else
+          command ssh $argv
+        end
+        ${shellcolor} enable $fish_pid
+        ${shellcolor} apply $fish_pid
+      '';
     };
-    interactiveShellInit =
-      # Open command buffer in vim when alt+e is pressed
-      ''
+    interactiveShellInit = /* fish */ ''
+        # Open command buffer in vim when alt+e is pressed
         bind \ee edit_command_buffer
-      ''
-      +
-      # kitty integration
-      ''
+
+        # kitty integration
         set --global KITTY_INSTALLATION_DIR "${pkgs.kitty}/lib/kitty"
         set --global KITTY_SHELL_INTEGRATION enabled
         source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
         set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
-      ''
-      +
-      # Use vim bindings and cursors
-      ''
+
+        # Use vim bindings and cursors
         fish_vi_key_bindings
         set fish_cursor_default     block      blink
         set fish_cursor_insert      line       blink
         set fish_cursor_replace_one underscore blink
         set fish_cursor_visual      block
-      ''
-      +
-      # Use terminal colors
-      ''
+
+        # Use terminal colors
         set -U fish_color_autosuggestion      brblack
         set -U fish_color_cancel              -r
         set -U fish_color_command             brgreen
