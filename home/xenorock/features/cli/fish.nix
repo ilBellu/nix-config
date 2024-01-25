@@ -9,7 +9,7 @@
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
   hasEza = hasPackage "eza";
-  ezaDefault = "eza --group-directories-first --total-size --changed --git --git-repos --color --icons";
+  ezaDefault = "eza --group-directories-first --changed --git --git-repos --color --icons";
   hasBat = config.programs.bat.enable;
   hasNeovim = config.programs.neovim.enable;
   hasNeomutt = config.programs.neomutt.enable;
@@ -43,6 +43,8 @@ in {
       exa = mkIf hasEza ezaDefault;
       ll = mkIf hasEza "${ezaDefault} -l";
       la = mkIf hasEza "${ezaDefault} -la";
+      lls = mkIf hasEza "${ezaDefault} -l --total-size";
+      lla = mkIf hasEza "${ezaDefault} -la --total-size";
 
       cat = mkIf hasBat "bat";
 
