@@ -16,6 +16,7 @@
   hasKitty = config.programs.kitty.enable;
   # shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
 in {
+  home.sessionVariables.PAGER = mkIf hasBat "bat";
   programs.fish = {
     enable = true;
     shellAbbrs = rec {
