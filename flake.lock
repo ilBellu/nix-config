@@ -126,7 +126,30 @@
     },
     "firefox-addons": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "pkgs/firefox-addons",
+        "lastModified": 1706155439,
+        "narHash": "sha256-Bcj9CwE1giS1tw3g2aMQiPwo6d7JQKHlnf/wsqxXalc=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "7915e98a24618949530ed1bb2181b0d38d7bc193",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "pkgs/firefox-addons",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
+      }
+    },
+    "firefox-addons_2": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "misterio77-nix-config",
           "nixpkgs"
@@ -236,6 +259,21 @@
       }
     },
     "flake-utils": {
+      "locked": {
+        "lastModified": 1629284811,
+        "narHash": "sha256-JHgasjPR0/J1J3DRm4KxM4zTyAj4IOJY8vIl75v/kPI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c5d161cc0af116a2e17f54316f0bf43f0819785c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
       "inputs": {
         "systems": "systems_2"
       },
@@ -253,7 +291,7 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
+    "flake-utils_3": {
       "locked": {
         "lastModified": 1629284811,
         "narHash": "sha256-JHgasjPR0/J1J3DRm4KxM4zTyAj4IOJY8vIl75v/kPI=",
@@ -268,7 +306,7 @@
         "type": "github"
       }
     },
-    "flake-utils_3": {
+    "flake-utils_4": {
       "inputs": {
         "systems": "systems_4"
       },
@@ -286,7 +324,7 @@
         "type": "github"
       }
     },
-    "flake-utils_4": {
+    "flake-utils_5": {
       "inputs": {
         "systems": "systems_6"
       },
@@ -304,7 +342,7 @@
         "type": "github"
       }
     },
-    "flake-utils_5": {
+    "flake-utils_6": {
       "inputs": {
         "systems": "systems_7"
       },
@@ -381,11 +419,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706080884,
-        "narHash": "sha256-qhxisCrSraN5YWVb0lNCFH8ovqnCw5W9ldac4Dzr0Nw=",
+        "lastModified": 1706134977,
+        "narHash": "sha256-KwNb1Li3K6vuVwZ77tFjZ89AWBo7AiCs9t0Cens4BsM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "6b28ab2d798c1c84e24053d95f4ee1dd9d81e2fb",
+        "rev": "6359d40f6ec0b72a38e02b333f343c3d4929ec10",
         "type": "github"
       },
       "original": {
@@ -461,6 +499,26 @@
       }
     },
     "hyprland-plugins": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ]
+      },
+      "locked": {
+        "lastModified": 1706142741,
+        "narHash": "sha256-gGAp3BF5cthUtzlxdF3GU3zgU/xLodvH+nVUJvUnhFQ=",
+        "owner": "hyprwm",
+        "repo": "hyprland-plugins",
+        "rev": "8ce5e6ebccb5444b2cbc98dc8664abac432476fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprland-plugins",
+        "type": "github"
+      }
+    },
+    "hyprland-plugins_2": {
       "inputs": {
         "hyprland": [
           "misterio77-nix-config",
@@ -601,6 +659,26 @@
     "hyprwm-contrib": {
       "inputs": {
         "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1705671586,
+        "narHash": "sha256-JOwVlSgwo2nqQRcArelrx/lK9OUoUxaXUQThQw1q8oA=",
+        "owner": "hyprwm",
+        "repo": "contrib",
+        "rev": "72a67d0f58d0ed44a20341fddb2bdfa33c2a2558",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "contrib",
+        "type": "github"
+      }
+    },
+    "hyprwm-contrib_2": {
+      "inputs": {
+        "nixpkgs": [
           "misterio77-nix-config",
           "nixpkgs"
         ]
@@ -638,12 +716,12 @@
       "inputs": {
         "disconic": "disconic",
         "firefly": "firefly",
-        "firefox-addons": "firefox-addons",
+        "firefox-addons": "firefox-addons_2",
         "hardware": "hardware_2",
         "home-manager": "home-manager_2",
         "hyprland": "hyprland_2",
-        "hyprland-plugins": "hyprland-plugins",
-        "hyprwm-contrib": "hyprwm-contrib",
+        "hyprland-plugins": "hyprland-plugins_2",
+        "hyprwm-contrib": "hyprwm-contrib_2",
         "impermanence": "impermanence",
         "nh": "nh",
         "nix-colors": "nix-colors",
@@ -657,11 +735,11 @@
         "yrmos": "yrmos"
       },
       "locked": {
-        "lastModified": 1705680395,
-        "narHash": "sha256-rENf7k8399ccNoXZLDVC4FK5PeXq1fTT7t8C7Rluqk0=",
+        "lastModified": 1706147689,
+        "narHash": "sha256-a+HVIfiBs1lxoxMZikBGDl28j7Llls0qkRU1givOlC4=",
         "owner": "Misterio77",
         "repo": "nix-config",
-        "rev": "97c9a1b014050fb7dd76aef5b228463e63a72010",
+        "rev": "44d70fe5d52152723d1851538298196856cd462a",
         "type": "github"
       },
       "original": {
@@ -693,7 +771,7 @@
     },
     "nil": {
       "inputs": {
-        "flake-utils": "flake-utils_4",
+        "flake-utils": "flake-utils_5",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -817,7 +895,7 @@
     "nix-minecraft": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "nixpkgs": [
           "misterio77-nix-config",
           "nixpkgs"
@@ -1074,7 +1152,7 @@
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_3",
-        "flake-utils": "flake-utils_5",
+        "flake-utils": "flake-utils_6",
         "gitignore": "gitignore",
         "nixpkgs": [
           "nixvim",
@@ -1101,9 +1179,12 @@
     },
     "root": {
       "inputs": {
+        "firefox-addons": "firefox-addons",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
+        "hyprland-plugins": "hyprland-plugins",
+        "hyprwm-contrib": "hyprwm-contrib",
         "misterio77-nix-config": "misterio77-nix-config",
         "nil": "nil",
         "nix-colors": "nix-colors_2",
@@ -1114,7 +1195,7 @@
     },
     "rust-overlay": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "misterio77-nix-config",
           "disconic",

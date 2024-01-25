@@ -13,18 +13,33 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Misterio77 nix-config
-    misterio77-nix-config = {
-      url = "github:Misterio77/nix-config";
-    };
-
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Misterio77 nix-config
+    misterio77-nix-config = {
+      url = "github:Misterio77/nix-config";
+    };
+
     hyprland = {
       url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprwm-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
