@@ -16,21 +16,32 @@
   wayland.windowManager.hyprland = {
     enable = true;
     # package = pkgs.hyprland.hyprland;
-    settings = {
+    settings = let
+      active = "0xff${config.colorscheme.palette.base0C}";
+      inactive = "0xff${config.colorscheme.palette.base02}";
+    in {
       general = {
         gaps_in = 15;
         gaps_out = 20;
         border_size = 2.7;
         cursor_inactive_timeout = 4;
-        "col.active_border" = "0xff${config.colorscheme.palette.base0C}";
-        "col.inactive_border" = "0xff${config.colorscheme.palette.base02}";
+        "col.active_border" = active;
+        "col.inactive_border" = inactive;
+      };
+      group = {
+        "col.border_active" = active;
+        "col.border_inactive" = inactive;
+        groupbar.font_size = 11;
       };
       input = {
         kb_layout = "us";
         # kb_layout = "it";
         touchpad.disable_while_typing = false;
       };
-      dwindle.split_width_multiplier = 1.35;
+      dwindle = {
+        split_width_multiplier = 1.35;
+        pseudo_tile = true;
+      };
       misc.vfr = true;
 
       decoration = {
