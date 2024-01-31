@@ -1,8 +1,21 @@
-{...}: {
+{ pkgs, ...}: {
   programs.firefox = {
     enable = true;
     profiles.xenorock = {
       isDefault = true;
+      extensions = with pkgs.inputs.firefox-addons; [
+        # Privacy
+        ublock-origin
+        decentraleyes
+        privacy-badger
+        # Youtube
+        return-youtube-dislikes
+        sponsorblock
+        youtube-shorts-block
+        # youtube-recommended-videos.overrideAttrs TODO: Fix licensing issue.
+        # Password Manager
+        keepassxc-browser
+      ];
       search.default = "DuckDuckGo";
       search.engines = {
         "Nix Packages" = {

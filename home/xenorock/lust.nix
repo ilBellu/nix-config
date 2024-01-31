@@ -16,7 +16,10 @@ in {
   colorscheme = colorSchemes.tokyo-city-terminal-dark;
   wallpaper = pkgs.wallpapers.aurora-borealis-water-mountain;
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    # allowUnfreePredicate = _: true;
+  };
 
   monitors = [
     {

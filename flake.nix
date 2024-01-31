@@ -66,7 +66,10 @@
     inherit (self) outputs;
     lib = nixpkgs.lib // home-manager.lib;
     systems = ["x86_64-linux"];
-    pkgsFor = lib.genAttrs systems (system: nixpkgs.legacyPackages.${system});
+    pkgsFor = lib.genAttrs systems (system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+    });
     forEachSystem = func: lib.genAttrs systems (system: func pkgsFor.${system});
   in {
     nixosModules = import ./modules/nixos;
