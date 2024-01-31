@@ -9,7 +9,7 @@
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
   hasEza = hasPackage "eza";
-  ezaDefault = "eza --group-directories-first --changed --git --git-repos --color --icons";
+  ezaDefault = "eza --group-directories-first --changed --git --git-repos --color --icons auto";
   hasBat = config.programs.bat.enable;
   hasNeovim = config.programs.neovim.enable;
   hasNeomutt = config.programs.neomutt.enable;
