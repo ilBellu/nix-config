@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  palette = (config.colorscheme).colors;
+  inherit (config.colorscheme) palette;
 in {
   home = {
     packages = with pkgs; [kitty];

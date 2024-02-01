@@ -1,5 +1,5 @@
 {config, ...}: let
-  palette = (config.colorscheme).colors;
+  inherit (config.colorscheme) palette;
 in {
   programs.zathura = {
     enable = true;
