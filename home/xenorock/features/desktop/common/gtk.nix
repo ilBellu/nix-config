@@ -6,6 +6,8 @@
 }: let
   inherit (inputs.nix-colors.lib-contrib {inherit pkgs;}) gtkThemeFromScheme;
 in rec {
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
   gtk = {
     enable = true;
     font = {

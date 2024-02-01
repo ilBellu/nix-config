@@ -13,9 +13,20 @@
     ./systemd-fixes.nix
   ];
 
+  xdg.portal = {
+    extraPortals = [ pkgs.inputs.hyprland.xdg-desktop-portal-hyprland ];
+    configPackages = [ pkgs.inputs.hyprland.hyprland ];
+  };
+
+  home.packages = with pkgs; [
+    inputs.hyprwm-contrib.grimblast
+    hyprslurp
+    hyprpicker
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
-    # package = pkgs.hyprland.hyprland;
+    package = pkgs.inputs.hyprland.hyprland;
     settings = let
       active = "0xff${config.colorscheme.palette.base0C}";
       inactive = "0xff${config.colorscheme.palette.base02}";
@@ -40,7 +51,7 @@
       };
       dwindle = {
         split_width_multiplier = 1.35;
-        pseudo_tile = true;
+        pseudotile = true;
       };
       misc.vfr = true;
 
@@ -87,6 +98,7 @@
 
       exec = [
         "${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper}"
+        "${pkgs.waybar}/bin/waybar" # This needs to be launched by hyprland or else the "custom/gpu" module won't work for NVIDIA
       ];
 
       bind = let
