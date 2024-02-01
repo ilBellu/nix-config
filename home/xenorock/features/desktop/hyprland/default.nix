@@ -10,7 +10,6 @@
 
     ./tty-init.nix
     ./basic-binds.nix
-    ./systemd-fixes.nix
   ];
 
   xdg.portal = {
@@ -27,6 +26,15 @@
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.inputs.hyprland.hyprland;
+    systemd = {
+      enable = true;
+      # Same as default, but stop graphical-session too
+      extraCommands = lib.mkBefore [
+        "systemctl --user stop graphical-session.target"
+        "systemctl --user start hyprland-session.target"
+      ];
+    };
+
     settings = let
       active = "0xff${config.colorscheme.palette.base0C}";
       inactive = "0xff${config.colorscheme.palette.base02}";
@@ -110,19 +118,21 @@
         # pass-wofi = "${pkgs.pass-wofi.override {
         # pass = config.programs.password-store.package;
         # }}/bin/pass-wofi";
-        # grimblast = "${pkgs.inputs.hyprwm-contrib.grimblast}/bin/grimblast";
+
+        grimblast = "${pkgs.inputs.hyprwm-contrib.grimblast}/bin/grimblast";
         pactl = "${pkgs.pulseaudio}/bin/pactl";
-        # tly = "${pkgs.tly}/bin/tly";
         # gtk-play = "${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play";
-        notify-send = "${pkgs.libnotify}/bin/notify-send";
-        gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
-        xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
-        defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
+        # notify-send = "${pkgs.libnotify}/bin/notify-send";
+
+        # gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
+        # xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
+
+        # defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
         terminal = config.home.sessionVariables.TERMINAL;
         password-manager = "${pkgs.keepassxc}/bin/keepassxc";
         browser = "${pkgs.firefox}/bin/firefox";
-        editor = "${pkgs.neovim}/bin/nvim";
-        # editor = config.home.sessionVariables.EDITOR;
+        # editor = "${pkgs.neovim}/bin/nvim";
+        editor = config.home.sessionVariables.EDITOR;
         # browser = defaultApp "x-scheme-handler/https";
         # editor = defaultApp "text/plain";
       in
@@ -144,16 +154,11 @@
           "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
           ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
           # Screenshotting
-          # ",Print,exec,${grimblast} --notify --freeze copy output"
-          # "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
-          # "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
-          # "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
-          # "ALT,Print,exec,${grimblast} --notify --freeze copy area"
-          # Tally counter
-          # "SUPER,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} add && ${gtk-play} -i dialog-information" # Add new entry
-          # "SUPERCONTROL,z,exec,${notify-send} -t 1000 $(${tly} time) && ${tly} undo && ${gtk-play} -i dialog-warning" # Undo last entry
-          # "SUPERCONTROLSHIFT,z,exec,${tly} reset && ${gtk-play} -i complete" # Reset
-          # "SUPERSHIFT,z,exec,${notify-send} -t 1000 $(${tly} time)" # Show current time
+          ",Print,exec,${grimblast} --notify --freeze copy output"
+          "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
+          "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
+          "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
+          "ALT,Print,exec,${grimblast} --notify --freeze copy area"
         ]
         ++ (lib.optionals config.services.playerctld.enable [
           # Media control
@@ -182,11 +187,7 @@
         (lib.optionals config.programs.wofi.enable [
           "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
           "SUPER,d,exec,${wofi} -S run"
-        ]); # ++ (lib.optionals config.programs.password-store.enable [
-      # ",Scroll_Lock,exec,${pass-wofi}" # fn+k
-      # ",XF86Calculator,exec,${pass-wofi}" # fn+f12
-      # "SUPER,semicolon,exec,pass-wofi"
-      # ]));
+        ]);
 
       monitor = map (
         m: let
