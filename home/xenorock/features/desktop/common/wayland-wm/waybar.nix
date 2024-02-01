@@ -13,14 +13,10 @@
   pgrep = "${pkgs.procps}/bin/pgrep";
   tail = "${pkgs.coreutils}/bin/tail";
   wc = "${pkgs.coreutils}/bin/wc";
-  xargs = "${pkgs.findutils}/bin/xargs";
   timeout = "${pkgs.coreutils}/bin/timeout";
   ping = "${pkgs.iputils}/bin/ping";
 
   jq = "${pkgs.jq}/bin/jq";
-  # gamemoded = "${pkgs.gamemode}/bin/gamemoded";
-  systemctl = "${pkgs.systemd}/bin/systemctl";
-  journalctl = "${pkgs.systemd}/bin/journalctl";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   playerctld = "${pkgs.playerctl}/bin/playerctld";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
@@ -44,26 +40,30 @@
       --arg class "${class}" \
       --arg percentage "${percentage}" \
       '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
-  ''}/bin/waybar-${name}";
+      ''}/bin/waybar-${name}";
+
+  hasSway = config.wayland.windowManager.sway.enable;
+  sway = config.wayland.windowManager.sway.package;
+  hasHyprland = config.wayland.windowManager.hyprland.enable;
+  hyprland = config.wayland.windowManager.hyprland.package;
 in {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
       mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
     });
-    systemd.enable = true;
+    systemd.enable = lib.mkForce false; # Waybar needs to be run by hyprland else the custom/gpu module doesn't work for nvidia
     settings = {
-      bottom = {
+      secondary = {
         layer = "top";
         position = "bottom";
         height = 40;
         width = 30;
-        margin = "6";
         fixed-center = true;
 
-        modules-center = ["hyprland/workspaces"];
+        modules-center = (lib.optionals hasHyprland ["hyprland/workspaces" "hyprland/submap"]) ++ (lib.optionals hasSway ["sway/workspaces" "sway/mode"]);
       };
-      top = {
+      primary = {
         layer = "top";
         position = "top";
         height = 40;
@@ -73,7 +73,6 @@ in {
 
         modules-left = [
           "custom/menu"
-          "pulseaudio"
           "custom/currentplayer"
           "custom/player"
         ];
@@ -84,17 +83,16 @@ in {
           "memory"
           "custom/gpu"
           "clock"
+          "pulseaudio"
           "custom/unread-mail"
-          # "custom/gpg-agent"
+          #"custom/gpg-agent"
+          "idle_inhibitor"
         ];
 
         modules-right = [
+          "custom/tailscale-ping"
           "network"
-          # "custom/tailscale-ping"
-          # "custom/gamemode"
-          # TODO: currently broken for some reason
-          # "custom/gammastep"
-          # "tray"
+          "tray"
           "custom/hostname"
         ];
 
@@ -158,9 +156,8 @@ in {
 
         network = {
           interval = 3;
-          format-wifi = "   {essid} {ipaddr}/{cidr} : {bandwidthUpBits} : {bandwidthDownBits}";
-          format-ethernet = "󰈁   {essid} {ipaddr}/{cidr} : {bandwidthUpBits} : {bandwidthDownBits}";
-          # format-ethernet = "󰈁 Connected";
+          format-wifi = "   {essid} {ipaddr}/{cidr}   {bandwidthUpBits}   {bandwidthDownBits}";
+          format-ethernet = "󰈁  {essid} {ipaddr}/{cidr}   {bandwidthUpBits}   {bandwidthDownBits}";
           format-disconnected = "";
           tooltip-format = ''
             {ifname}
@@ -196,14 +193,24 @@ in {
           format = "{}";
           on-click = "";
         };
-
-        "custom/menu" = {
+"custom/menu" = let
+          isFullScreen =
+            if hasHyprland then "${hyprland}/bin/hyprctl activewindow -j | ${jq} -e '.fullscreen' &>/dev/null"
+            else "false";
+        in {
+          interval = 1;
           return-type = "json";
           exec = jsonOutput "menu" {
             text = "";
             tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
+            class = "$(if ${isFullScreen}; then echo fullscreen; fi)";
           };
-          on-click = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
+          on-click-left = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
+          on-click-right = lib.concatStringsSep ";" (
+            (lib.optional hasHyprland "${hyprland}/bin/hyprctl dispatch togglespecialworkspace") ++
+            (lib.optional hasSway "${sway}/bin/swaymsg scratchpad show")
+          );
+
         };
 
         "custom/hostname" = {
@@ -255,54 +262,13 @@ in {
         # on-click = "";
         # };
 
-        # "custom/gamemode" = {
-        # exec-if = "${gamemoded} --status | ${grep} 'is active' -q";
-        # interval = 2;
-        # return-type = "json";
-        # exec = jsonOutput "gamemode" {
-        # tooltip = "Gamemode is active";
-        # };
-        # format = " ";
-        # };
-
-        # "custom/gammastep" = {
-        # interval = 5;
-        # return-type = "json";
-        # exec = jsonOutput "gammastep" {
-        # pre = ''
-        # if unit_status="$(${systemctl} --user is-active gammastep)"; then
-        # status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))"
-        # else
-        # status="$unit_status"
-        # fi
-        # '';
-        # alt = "\${status:-inactive}";
-        # tooltip = "Gammastep is $status";
-        # };
-        # format = "{icon}";
-        # format-icons = {
-        # "activating" = "󰁪 ";
-        # "deactivating" = "󰁪 ";
-        # "inactive" = "? ";
-        # "active (Night)" = " ";
-        # "active (Nighttime)" = " ";
-        # "active (Transition (Night)" = " ";
-        # "active (Transition (Nighttime)" = " ";
-        # "active (Day)" = " ";
-        # "active (Daytime)" = " ";
-        # "active (Transition (Day)" = " ";
-        # "active (Transition (Daytime)" = " ";
-        # };
-        # on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
-        # };
-
         "custom/currentplayer" = {
           interval = 2;
           return-type = "json";
           exec = jsonOutput "currentplayer" {
             pre = ''
               player="$(${playerctl} status -f "{{playerName}}" 2>/dev/null || echo "No player active" | ${cut} -d '.' -f1)"
-              count="$(${playerctl} -l | ${wc} -l)"
+              count="$(${playerctl} -l 2>/dev/null | ${wc} -l)"
               if ((count > 1)); then
                 more=" +$((count - 1))"
               else
@@ -331,10 +297,10 @@ in {
         };
 
         "custom/player" = {
-          exec-if = "${playerctl} status";
-          exec = ''${playerctl} metadata --format '{"text": "{{title}} - {{artist}}", "alt": "{{status}}", "tooltip": "{{title}} - {{artist}} ({{album}})"}' '';
+          exec-if = "${playerctl} status 2>/dev/null";
+          exec = ''${playerctl} metadata --format '{"text": "{{title}} - {{artist}}", "alt": "{{status}}", "tooltip": "{{title}} - {{artist}} ({{album}})"}' 2>/dev/null '';
           return-type = "json";
-          interval = 2;
+          interval = 1;
           max-length = 30;
           format = "{icon} {}";
           format-icons = {
@@ -352,7 +318,7 @@ in {
     # x y z -> top, horizontal, bottom
     # w x y z -> top, right, bottom, left
     style = let
-      inherit (config.colorscheme) colors;
+      inherit (config.colorscheme) palette;
     in
       /*
       css
@@ -364,56 +330,59 @@ in {
                padding: 0 8px;
              }
 
-             window#waybar.top .modules-center {
-               margin-left: -70px;
-             }
-
-             .modules-right {
-               margin-right: -15px;
+             window#waybar {
+               padding: 0;
+               opacity: 0.75;
+               border-radius: 0.5em;
+               background-color: #${palette.base00};
+               color: #${palette.base05};
              }
 
              .modules-left {
                margin-left: -15px;
              }
 
+             .modules-right {
+               margin-right: -15px;
+             }
+
              window#waybar.top {
                opacity: 0.95;
-               background-color: #${colors.base00};
-               border: 2px solid #${colors.base0C};
+               background-color: #${palette.base00};
+               border: 2px solid #${palette.base0C};
                border-radius: 10px;
              }
 
              window#waybar.bottom {
-               opacity: 0.90;
-        margin: 0 0px;
-               background-color: #${colors.base00};
-               border: 2px solid #${colors.base0C};
+               opacity: 0.95;
+               margin: 0;
+               padding: 0;
+               background-color: #${palette.base00};
+               border: 2px solid #${palette.base0C};
                border-radius: 10px;
              }
 
-             window#waybar {
-               color: #${colors.base05};
-             }
-
              #workspaces button {
-               background-color: #${colors.base01};
-               color: #${colors.base05};
+               background-color: #${palette.base01};
+               color: #${palette.base05};
                padding: 5px 10px;
                margin: 3px 0;
              }
+
              #workspaces button.hidden {
-               background-color: #${colors.base00};
-               color: #${colors.base04};
+               background-color: #${palette.base00};
+               color: #${palette.base04};
              }
+
              #workspaces button.focused,
              #workspaces button.active {
-               background-color: #${colors.base0A};
-               color: #${colors.base00};
+               background-color: #${palette.base0A};
+               color: #${palette.base00};
              }
 
              #clock {
-               background-color: #${colors.base0C};
-               color: #${colors.base00};
+               background-color: #${palette.base0C};
+               color: #${palette.base00};
                padding-left: 15px;
                padding-right: 15px;
                margin-top: 0;
@@ -422,16 +391,16 @@ in {
              }
 
              #custom-menu {
-               background-color: #${colors.base0C};
-               color: #${colors.base00};
+               background-color: #${palette.base0C};
+               color: #${palette.base00};
                padding-left: 15px;
                padding-right: 22px;
                margin: 0;
                border-radius: 10px;
              }
              #custom-hostname {
-               background-color: #${colors.base0C};
-               color: #${colors.base00};
+               background-color: #${palette.base0C};
+               color: #${palette.base00};
                padding-left: 15px;
                padding-right: 18px;
                margin-right: 0;
@@ -443,7 +412,7 @@ in {
                padding-right: 0;
              }
              #tray {
-               color: #${colors.base05};
+               color: #${palette.base05};
              }
       '';
   };
