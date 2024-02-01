@@ -1,5 +1,7 @@
 {
   imports = [
+    ./browsers/firefox.nix
+    ./dragon.nix
     ./pavucontrol.nix
     ./font.nix
     ./deluge.nix

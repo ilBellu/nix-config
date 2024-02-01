@@ -8,8 +8,6 @@ in {
   imports = [
     ./global
     ./features/desktop/hyprland
-    ./features/browsers/firefox.nix
-    ./features/comunication/discord.nix
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
