@@ -47,7 +47,8 @@ in {
         else mkDefault ["amdgpu"];
       kernelParams =
         if (cfg.cpu == "intel")
-        then mkDefault ["i915.modeset=0"]
+          # The max_cstate option fixes an issue with slow video playback
+        then mkDefault ["i915.modeset=0 intel_idle.max_cstate=0"]
         else mkDefault ["radeon.modeset=0"];
 
       # Fixes if Booting to Text Mode doesn't work. See: https://nixos.wiki/wiki/Nvidia#Booting_to_Text_Mode
