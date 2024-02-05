@@ -17,8 +17,8 @@
     gc = lib.mkDefault {
       automatic = true;
       dates = "weekly";
-      # Keep the last 20 generations
-      options = "--delete-older-than +7";
+      # Keep tha generations of the last 7 days
+      options = "--delete-older-than 7d";
     };
 
     # Add each flake input as a registry
