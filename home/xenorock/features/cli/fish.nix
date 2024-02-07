@@ -21,7 +21,10 @@ in {
   home.sessionVariables.PAGER = mkIf hasBat "bat";
   programs.fish = {
     enable = true;
-    shellAbbrs = rec {
+    shellAbbrs = let
+      flake = "--flake ./#${hostName}";
+      hm-flake = "--flake ./#${username}@${hostName}";
+      in rec {
       # Nix
       n = "nix";
       nd = "nix develop -c $SHELL";
@@ -33,10 +36,11 @@ in {
       nfu = "nix flake update";
 
       # NixOs and home-manager
-      nr = "nixos-rebuild --flake ./#${hostName}";
-      nrs = "nixos-rebuild --flake ./#${hostName} switch --use-remote-sudo";
-      hm = "home-manager --flake .#${username}@${hostName}";
-      hms = "home-manager --flake .#${username}@${hostName} switch";
+      nr = "nixos-rebuild ${flake}";
+      nrs = "nixos-rebuild ${flake} switch --use-remote-sudo";
+      hm = "home-manager ${hm-flake}";
+      hms = "home-manager ${hm-flake} switch";
+      hmn = "home-manager ${hm-flake} news";
 
       # ls improvements
       ls = mkIf hasEza ezaDefault;
