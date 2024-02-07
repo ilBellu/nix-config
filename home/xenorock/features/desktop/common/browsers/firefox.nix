@@ -17,7 +17,9 @@
         keepassxc-browser
       ];
       search.default = "DuckDuckGo";
-      search.engines = {
+      search.engines = let
+        daily = 24 * 60 * 60 * 1000;
+      in{
         "Nix Packages" = {
           urls = [
             {
@@ -40,7 +42,7 @@
           ];
 
           iconUpdateURL = "https://search.nixos.org/favicon.png";
-          updateInterval = 24 * 60 * 60 * 1000;
+          updateInterval = daily;
           definedAliases = ["@nixp"];
         };
         "Nix Options" = {
@@ -65,7 +67,7 @@
           ];
 
           iconUpdateURL = "https://search.nixos.org/favicon.png";
-          updateInterval = 24 * 60 * 60 * 1000;
+          updateInterval = daily;
           definedAliases = ["@nixo"];
         };
         "Nix Flakes" = {
@@ -90,7 +92,7 @@
           ];
 
           iconUpdateURL = "https://search.nixos.org/favicon.png";
-          updateInterval = 24 * 60 * 60 * 1000;
+          updateInterval = daily;
           definedAliases = ["@nixf"];
         };
         "Home Manager" = {
@@ -100,7 +102,7 @@
             }
           ];
           iconUpdateURL = "https://mipmip.github.io/home-manager-option-search/favicon.png";
-          updateInterval = 24 * 60 * 60 * 1000;
+          updateInterval = daily;
           definedAliases = ["@nixho"];
         };
         "NixOS Wiki" = {
@@ -110,7 +112,7 @@
             }
           ];
           iconUpdateURL = "https://nixos.wiki/favicon.png";
-          updateInterval = 24 * 60 * 60 * 1000; # every day
+          updateInterval = daily;
           definedAliases = ["@nixw"];
         };
         "Github Repositories" = {
@@ -120,7 +122,7 @@
             }
           ];
           iconUpdateURL = "https://github.githubassets.com/favicons/favicon-dark.svg";
-          updateInterval = 24 * 60 * 60 * 1000; # every day
+          updateInterval = daily;
           definedAliases = ["@ghr"];
         };
         "Github Users" = {
@@ -130,8 +132,28 @@
             }
           ];
           iconUpdateURL = "https://github.githubassets.com/favicons/favicon-dark.svg";
-          updateInterval = 24 * 60 * 60 * 1000; # every day
+          updateInterval = daily;
           definedAliases = ["@ghu"];
+        };
+        "Open Food Facts" = {
+          urls = [
+            {
+              template = "https://world.openfoodfacts.org/cgi/search.pl?search_terms={searchTerms}&search_simple=1&action=process";
+            }
+          ];
+          iconUpdateURL = "https://world.openfoodfacts.org/images/favicon/apple-touch-icon.png";
+          updateInterval = daily;
+          definedAliases = ["@off"];
+        };
+        "MyPersonalTrainer" = {
+          urls = [
+            {
+              template = "https://www.my-personaltrainer.it/ricerca/{searchTerms/";
+            }
+          ];
+          iconUpdateURL = "https://www.my-personaltrainer.it/img/icon/favicon-32x32.png";
+          updateInterval = daily;
+          definedAliases = ["@mpt"];
         };
         "Google".metaData.alias = "@g";
       };
