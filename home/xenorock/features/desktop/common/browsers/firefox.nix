@@ -16,7 +16,21 @@
         # Password Manager
         keepassxc-browser
       ];
+      settings = {
+        "browser.disableResetPrompt" = true;
+        "browser.download.panel.shown" = true;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.shell.checkDefaultBrowser" = false;
+        "browser.startup.homepage" = "https://start.duckduckgo.com";
+        "dom.security.https_only_mode" = true;
+        "identity.fxaccounts.enabled" = false;
+        "privacy.trackingprotectionenabled" = true;
+        "signon.rememberSignons" = false;
+      };
+      bookmarks = {};
       search.default = "DuckDuckGo";
+      search.order = ["DuckDuckGo" "google"];
+      search.force = true;
       search.engines = let
         daily = 24 * 60 * 60 * 1000;
       in{
@@ -157,18 +171,13 @@
         };
         "Google".metaData.alias = "@g";
       };
-      search.order = ["DuckDuckGo" "google"];
-      search.force = true;
-      bookmarks = {};
-      settings = {
-        "browser.disableResetPrompt" = true;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.shell.checkDefaultBrowser" = false;
-        "browser.startup.homepage" = "https://start.duckduckgo.com";
-        "dom.security.https_only_mode" = true;
-        "identity.fxaccounts.enabled" = false;
-        "privacy.trackingprotectionenabled" = true;
-      };
     };
+  };
+
+  xdg.mimeApps.defaultApplications = {
+    "text/html" = [ "firefox.desktop" ];
+    "text/xml" = [ "firefox.desktop" ];
+    "x-scheme-handler/http" = [ "firefox.desktop" ];
+    "x-scheme-handler/https" = [ "firefox.desktop" ];
   };
 }
