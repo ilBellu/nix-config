@@ -4,6 +4,8 @@
     profiles.xenorock = {
       isDefault = true;
       extensions = with pkgs.inputs.firefox-addons; [
+        # Navigation
+        vimium
         # Privacy
         ublock-origin
         decentraleyes
