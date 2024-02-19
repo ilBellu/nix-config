@@ -163,7 +163,7 @@ in {
         set -U fish_pager_color_description   yellow
         set -U fish_pager_color_prefix        'white' '--bold' '--underline'
         set -U fish_pager_color_progress      'brwhite' '--background=cyan'
-        ${zoxide} init --no-cmd --cmd cd fish | source
+        ${zoxide} init --cmd cd fish | source
       '';
   };
 }
