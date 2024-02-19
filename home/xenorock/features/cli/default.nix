@@ -14,6 +14,7 @@
     ./screen.nix # Usefull for ssh multitasking
     ./shellcolor.nix # Utility to change running terminal colorscheme
     # ./ssh.nix
+    ./zoxide.nix # Better cd
     ./starship.nix # Terminal prompt
     # ./xpo.nix
     ../editors/nixvim # Nvim
