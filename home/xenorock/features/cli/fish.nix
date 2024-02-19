@@ -16,6 +16,7 @@
   hasShellColor = config.programs.shellcolor.enable;
   hasKitty = config.programs.kitty.enable;
   shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
+  zoxide = "${pkgs.zoxide}/bin/zoxide";
   username = config.home.username;
 in {
   home.sessionVariables.PAGER = mkIf hasBat "bat";
@@ -162,6 +163,7 @@ in {
         set -U fish_pager_color_description   yellow
         set -U fish_pager_color_prefix        'white' '--bold' '--underline'
         set -U fish_pager_color_progress      'brwhite' '--background=cyan'
+        ${zoxide} init --no-cmd --cmd cd fish | source
       '';
   };
 }
