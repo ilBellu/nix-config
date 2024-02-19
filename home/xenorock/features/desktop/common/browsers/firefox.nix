@@ -1,4 +1,4 @@
-{ pkgs, ...}: {
+{pkgs, ...}: {
   programs.firefox = {
     enable = true;
     profiles.xenorock = {
@@ -33,7 +33,7 @@
       search.force = true;
       search.engines = let
         daily = 24 * 60 * 60 * 1000;
-      in{
+      in {
         "Nix Packages" = {
           urls = [
             {
@@ -175,9 +175,9 @@
   };
 
   xdg.mimeApps.defaultApplications = {
-    "text/html" = [ "firefox.desktop" ];
-    "text/xml" = [ "firefox.desktop" ];
-    "x-scheme-handler/http" = [ "firefox.desktop" ];
-    "x-scheme-handler/https" = [ "firefox.desktop" ];
+    "text/html" = ["firefox.desktop"];
+    "text/xml" = ["firefox.desktop"];
+    "x-scheme-handler/http" = ["firefox.desktop"];
+    "x-scheme-handler/https" = ["firefox.desktop"];
   };
 }

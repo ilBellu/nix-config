@@ -40,7 +40,7 @@
       --arg class "${class}" \
       --arg percentage "${percentage}" \
       '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
-      ''}/bin/waybar-${name}";
+  ''}/bin/waybar-${name}";
 
   hasSway = config.wayland.windowManager.sway.enable;
   sway = config.wayland.windowManager.sway.package;
@@ -193,9 +193,10 @@ in {
           format = "{}";
           on-click = "";
         };
-"custom/menu" = let
+        "custom/menu" = let
           isFullScreen =
-            if hasHyprland then "${hyprland}/bin/hyprctl activewindow -j | ${jq} -e '.fullscreen' &>/dev/null"
+            if hasHyprland
+            then "${hyprland}/bin/hyprctl activewindow -j | ${jq} -e '.fullscreen' &>/dev/null"
             else "false";
         in {
           interval = 1;
@@ -207,10 +208,9 @@ in {
           };
           on-click-left = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
           on-click-right = lib.concatStringsSep ";" (
-            (lib.optional hasHyprland "${hyprland}/bin/hyprctl dispatch togglespecialworkspace") ++
-            (lib.optional hasSway "${sway}/bin/swaymsg scratchpad show")
+            (lib.optional hasHyprland "${hyprland}/bin/hyprctl dispatch togglespecialworkspace")
+            ++ (lib.optional hasSway "${sway}/bin/swaymsg scratchpad show")
           );
-
         };
 
         "custom/hostname" = {
@@ -324,96 +324,96 @@ in {
       css
       */
       ''
-             * {
-               font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
-               font-size: 12pt;
-               padding: 0 8px;
-             }
+        * {
+          font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
+          font-size: 12pt;
+          padding: 0 8px;
+        }
 
-             window#waybar {
-               padding: 0;
-               opacity: 0.75;
-               border-radius: 0.5em;
-               background-color: #${palette.base00};
-               color: #${palette.base05};
-             }
+        window#waybar {
+          padding: 0;
+          opacity: 0.75;
+          border-radius: 0.5em;
+          background-color: #${palette.base00};
+          color: #${palette.base05};
+        }
 
-             .modules-left {
-               margin-left: -15px;
-             }
+        .modules-left {
+          margin-left: -15px;
+        }
 
-             .modules-right {
-               margin-right: -15px;
-             }
+        .modules-right {
+          margin-right: -15px;
+        }
 
-             window#waybar.top {
-               opacity: 0.95;
-               background-color: #${palette.base00};
-               border: 2px solid #${palette.base0C};
-               border-radius: 10px;
-             }
+        window#waybar.top {
+          opacity: 0.95;
+          background-color: #${palette.base00};
+          border: 2px solid #${palette.base0C};
+          border-radius: 10px;
+        }
 
-             window#waybar.bottom {
-               opacity: 0.95;
-               margin: 0;
-               padding: 0;
-               background-color: #${palette.base00};
-               border: 2px solid #${palette.base0C};
-               border-radius: 10px;
-             }
+        window#waybar.bottom {
+          opacity: 0.95;
+          margin: 0;
+          padding: 0;
+          background-color: #${palette.base00};
+          border: 2px solid #${palette.base0C};
+          border-radius: 10px;
+        }
 
-             #workspaces button {
-               background-color: #${palette.base01};
-               color: #${palette.base05};
-               padding: 5px 10px;
-               margin: 3px 0;
-             }
+        #workspaces button {
+          background-color: #${palette.base01};
+          color: #${palette.base05};
+          padding: 5px 10px;
+          margin: 3px 0;
+        }
 
-             #workspaces button.hidden {
-               background-color: #${palette.base00};
-               color: #${palette.base04};
-             }
+        #workspaces button.hidden {
+          background-color: #${palette.base00};
+          color: #${palette.base04};
+        }
 
-             #workspaces button.focused,
-             #workspaces button.active {
-               background-color: #${palette.base0A};
-               color: #${palette.base00};
-             }
+        #workspaces button.focused,
+        #workspaces button.active {
+          background-color: #${palette.base0A};
+          color: #${palette.base00};
+        }
 
-             #clock {
-               background-color: #${palette.base0C};
-               color: #${palette.base00};
-               padding-left: 15px;
-               padding-right: 15px;
-               margin-top: 0;
-               margin-bottom: 0;
-               border-radius: 10px;
-             }
+        #clock {
+          background-color: #${palette.base0C};
+          color: #${palette.base00};
+          padding-left: 15px;
+          padding-right: 15px;
+          margin-top: 0;
+          margin-bottom: 0;
+          border-radius: 10px;
+        }
 
-             #custom-menu {
-               background-color: #${palette.base0C};
-               color: #${palette.base00};
-               padding-left: 15px;
-               padding-right: 22px;
-               margin: 0;
-               border-radius: 10px;
-             }
-             #custom-hostname {
-               background-color: #${palette.base0C};
-               color: #${palette.base00};
-               padding-left: 15px;
-               padding-right: 18px;
-               margin-right: 0;
-               margin-top: 0;
-               margin-bottom: 0;
-               border-radius: 10px;
-             }
-             #custom-currentplayer {
-               padding-right: 0;
-             }
-             #tray {
-               color: #${palette.base05};
-             }
+        #custom-menu {
+          background-color: #${palette.base0C};
+          color: #${palette.base00};
+          padding-left: 15px;
+          padding-right: 22px;
+          margin: 0;
+          border-radius: 10px;
+        }
+        #custom-hostname {
+          background-color: #${palette.base0C};
+          color: #${palette.base00};
+          padding-left: 15px;
+          padding-right: 18px;
+          margin-right: 0;
+          margin-top: 0;
+          margin-bottom: 0;
+          border-radius: 10px;
+        }
+        #custom-currentplayer {
+          padding-right: 0;
+        }
+        #tray {
+          color: #${palette.base05};
+        }
       '';
   };
 }

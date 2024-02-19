@@ -4,9 +4,12 @@
   ...
 }: let
   inherit (config.colorscheme) palette;
+  kitty-xterm = pkgs.writeShellScriptBin "xterm" ''
+    ${config.programs.kitty.package}/bin/kitty "$@"
+  '';
 in {
   home = {
-    packages = with pkgs; [kitty];
+    packages = [kitty-xterm];
     sessionVariables = {
       TERMINAL = "kitty -1";
     };

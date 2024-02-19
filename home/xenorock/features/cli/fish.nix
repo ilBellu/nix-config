@@ -24,7 +24,7 @@ in {
     shellAbbrs = let
       flake = "--flake ./#${hostName}";
       hm-flake = "--flake ./#${username}@${hostName}";
-      in rec {
+    in rec {
       # Nix
       n = "nix";
       nd = "nix develop -c $SHELL";

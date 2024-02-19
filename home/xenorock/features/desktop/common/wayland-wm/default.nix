@@ -38,5 +38,5 @@
     WLR_NO_HARDWARE_CURSORS = "1"; # Nvidia try
   };
 
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-wlr];
 }
