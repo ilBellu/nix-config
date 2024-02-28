@@ -9,7 +9,7 @@
     # ./gpg.nix
     # ./jujutsu.nix
     ./nix-index.nix
-    ./thefuck.nix # Enables thefuck command correction
+    # ./thefuck.nix # Enables thefuck command correction
     ./pfetch.nix # Better neofetch
     ./ranger.nix # TUI file explorer
     ./screen.nix # Usefull for ssh multitasking
@@ -22,6 +22,7 @@
   ];
   home.packages = with pkgs; [
     comma # Nix command to run programs without installing them by preceding them with a comma
+    nh # NixOs and HM wrapper
     bc # Calculator
     bottom # System viewer
     # ncdu # TUI disk usage

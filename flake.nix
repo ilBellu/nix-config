@@ -18,6 +18,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # NixOs and HM wrapper
+    nh = {
+      url = "github:viperml/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Misterio77 nix-config
     misterio77-nix-config = {
       url = "github:Misterio77/nix-config";
