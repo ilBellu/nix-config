@@ -15,6 +15,7 @@
   hasNeomutt = config.programs.neomutt.enable;
   hasShellColor = config.programs.shellcolor.enable;
   hasKitty = config.programs.kitty.enable;
+  hasGh = config.programs.gh.enable && config.programs.gh.extensions;
   shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
   zoxide = "${pkgs.zoxide}/bin/zoxide";
   username = config.home.username;
@@ -57,6 +58,8 @@ in {
       vim = mkIf hasNeovim "nvim";
       vi = vim;
       v = vim;
+
+      ghmd = mkIf hasGh "gh markdown-preview";
 
       mutt = mkIf hasNeomutt "neomutt";
       m = mutt;
