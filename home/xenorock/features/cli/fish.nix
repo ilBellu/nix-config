@@ -5,7 +5,7 @@
   hostName,
   ...
 }: let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf count;
   hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
   hasRipgrep = hasPackage "ripgrep";
   hasEza = hasPackage "eza";
@@ -15,7 +15,7 @@
   hasNeomutt = config.programs.neomutt.enable;
   hasShellColor = config.programs.shellcolor.enable;
   hasKitty = config.programs.kitty.enable;
-  hasGh = config.programs.gh.enable && config.programs.gh.extensions;
+  hasGh = config.programs.gh.enable;
   shellcolor = "${pkgs.shellcolord}/bin/shellcolor";
   zoxide = "${pkgs.zoxide}/bin/zoxide";
   username = config.home.username;
