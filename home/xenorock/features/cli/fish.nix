@@ -37,6 +37,10 @@ in {
       nf = "nix flake";
       nfu = "nix flake update";
 
+      # Nh
+      nho = "nh os switch --nom .";
+      nhh = "nh home switch .";
+
       # NixOs and home-manager
       nr = "nixos-rebuild ${flake}";
       nrs = "nixos-rebuild ${flake} switch --use-remote-sudo";
