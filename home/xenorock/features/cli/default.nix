@@ -9,6 +9,7 @@
     # ./gpg.nix
     # ./jujutsu.nix
     ./nix-index.nix
+    ./thefuck.nix # Enables thefuck command correction
     ./pfetch.nix # Better neofetch
     ./ranger.nix # TUI file explorer
     ./screen.nix # Usefull for ssh multitasking
