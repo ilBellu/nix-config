@@ -23,7 +23,6 @@
     wl-clipboard
     wl-mirror
     wl-mirror-pick
-    xdg-utils-spawn-terminal
     ydotool
   ];
 

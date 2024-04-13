@@ -4,43 +4,63 @@
   keymaps = {
     "<leader>?" = {
       action = "oldfiles";
-      desc = "[?] Find recently opened files";
+      options = {
+        desc = "[?] Find recently opened files";
+      };
     };
     "<leader><space>" = {
       action = "oldfiles";
-      desc = "[ ] Find existing buffers";
+      options = {
+        desc = "[ ] Find existing buffers";
+      };
     };
     "<leader>/" = {
       action = "current_buffer_fuzzy_find";
-      desc = "[/] Fuzzily search in current buffer";
+      options = {
+        desc = "[/] Fuzzily search in current buffer";
+      };
     };
     "<leader>gf" = {
       action = "git_files";
-      desc = "Search [G]it [F]iles";
+      options = {
+        desc = "Search [G]it [F]iles";
+      };
     };
     "<leader>sf" = {
       action = "find_files";
-      desc = "[S]earch [F]iles";
+      options = {
+        desc = "[S]earch [F]iles";
+      };
     };
     "<leader>sh" = {
       action = "oldfiles";
-      desc = "[S]earch [H]elp";
+      options = {
+        desc = "[S]earch [H]elp";
+      };
     };
     "<leader>sw" = {
       action = "oldfiles";
-      desc = "[S]earch current [W]ord";
+      options = {
+        desc = "[S]earch current [W]ord";
+      };
     };
     "<leader>sg" = {
       action = "oldfiles";
-      desc = "[S]earch by [G]rep";
+      options = {
+        desc = "[S]earch by [G]rep";
+      };
     };
     "<leader>sd" = {
       action = "oldfiles";
-      desc = "[S]earch [D]iagnostics";
+      options = {
+        desc = "[S]earch [D]iagnostics";
+      };
     };
     "<leader>sr" = {
       action = "oldfiles";
-      desc = "[S]earch [R]esume";
+      options = {
+        desc = "[S]earch [R]esume";
+      };
     };
   };
 }

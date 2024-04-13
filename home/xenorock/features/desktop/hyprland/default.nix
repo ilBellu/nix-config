@@ -42,7 +42,7 @@
       general = {
         gaps_in = 15;
         gaps_out = 20;
-        border_size = 2.7;
+        border_size = 2;
         cursor_inactive_timeout = 4;
         "col.active_border" = active;
         "col.inactive_border" = inactive;

@@ -12,7 +12,8 @@ in {
   ];
 
   colorscheme = colorSchemes.tokyo-city-terminal-dark;
-  wallpaper = pkgs.wallpapers.aurora-borealis-water-mountain;
+  # wallpaper = pkgs.wallpapers.aurora-borealis-water-mountain;
+  wallpaper = ../../tai_lung.png;
 
   nixpkgs.config = {
     allowUnfree = true;

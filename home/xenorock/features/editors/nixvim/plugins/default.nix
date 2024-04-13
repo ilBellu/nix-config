@@ -21,7 +21,7 @@
   cmp-path.enable = true; # nvim-cmp dependency
   cmp_luasnip.enable = true; # nvim-cmp dependency for luasnip
 
-  nvim-cmp = import ./nvim-cmp.nix;
+  cmp = import ./nvim-cmp.nix;
 
   # Telescope
   telescope = import ./telescope.nix;
