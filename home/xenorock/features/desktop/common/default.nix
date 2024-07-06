@@ -11,7 +11,7 @@
     ./kdeconnect.nix
     ./playerctl.nix
     ./qt.nix
-    ./sublime-music.nix
+    # ./sublime-music.nix
   ];
 
   xdg.portal.enable = true;

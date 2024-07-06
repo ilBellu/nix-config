@@ -12,28 +12,23 @@
     ./basic-binds.nix
   ];
 
-  xdg.portal = {
-    extraPortals = [pkgs.inputs.hyprland.xdg-desktop-portal-hyprland];
-    configPackages = [pkgs.inputs.hyprland.hyprland];
+  xdg.portal = let
+    hyprland = config.wayland.windowManager.hyprland.package;
+    xdph = pkgs.xdg-desktop-portal-hyprland.override {inherit hyprland;};
+  in {
+    extraPortals = [xdph];
+    configPackages = [hyprland];
   };
 
   home.packages = with pkgs; [
     inputs.hyprwm-contrib.grimblast
-    hyprslurp
+    # hyprslurp
     hyprpicker
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.inputs.hyprland.hyprland;
-    systemd = {
-      enable = true;
-      # Same as default, but stop graphical-session too
-      extraCommands = lib.mkBefore [
-        "systemctl --user stop graphical-session.target"
-        "systemctl --user start hyprland-session.target"
-      ];
-    };
+    package = pkgs.hyprland.override {wrapRuntimeDeps = false;};
 
     settings = let
       active = "0xff${config.colorscheme.palette.base0C}";
@@ -43,7 +38,7 @@
         gaps_in = 15;
         gaps_out = 20;
         border_size = 2;
-        cursor_inactive_timeout = 4;
+        #cursor_inactive_timeout = 4;
         "col.active_border" = active;
         "col.inactive_border" = inactive;
       };

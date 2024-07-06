@@ -18,7 +18,7 @@ in {
       maplocalleader = " ";
     };
 
-    options = import ./options.nix;
+    opts = import ./options.nix;
 
     keymaps = import ./keymaps.nix;
 
