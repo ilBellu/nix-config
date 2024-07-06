@@ -21,7 +21,7 @@
   };
 
   home.packages = with pkgs; [
-    inputs.hyprwm-contrib.grimblast
+    # inputs.hyprwm-contrib.grimblast
     # hyprslurp
     hyprpicker
   ];
@@ -114,7 +114,7 @@
         # pass = config.programs.password-store.package;
         # }}/bin/pass-wofi";
 
-        grimblast = "${pkgs.inputs.hyprwm-contrib.grimblast}/bin/grimblast";
+        # grimblast = "${pkgs.inputs.hyprwm-contrib.grimblast}/bin/grimblast";
         pactl = "${pkgs.pulseaudio}/bin/pactl";
         # gtk-play = "${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play";
         # notify-send = "${pkgs.libnotify}/bin/notify-send";
@@ -149,11 +149,11 @@
           "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
           ",XF85AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
           # Screenshotting
-          ",Print,exec,${grimblast} --notify --freeze copy output"
-          "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
-          "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
-          "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
-          "ALT,Print,exec,${grimblast} --notify --freeze copy area"
+          # ",Print,exec,${grimblast} --notify --freeze copy output"
+          # "SHIFT,Print,exec,${grimblast} --notify --freeze copy active"
+          # "CONTROL,Print,exec,${grimblast} --notify --freeze copy screen"
+          # "SUPER,Print,exec,${grimblast} --notify --freeze copy area"
+          # "ALT,Print,exec,${grimblast} --notify --freeze copy area"
         ]
         ++ (lib.optionals config.services.playerctld.enable [
           # Media control

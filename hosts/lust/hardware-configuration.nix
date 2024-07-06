@@ -29,11 +29,7 @@
   # Enables redistributable firmware to allow updating microcode
   hardware = {
     enableRedistributableFirmware = true;
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
+    graphics.enable = true;
   };
 
   fileSystems."/" = {

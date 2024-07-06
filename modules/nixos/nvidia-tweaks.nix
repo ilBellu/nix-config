@@ -29,7 +29,7 @@ in {
     services.xserver.videoDrivers = mkDefault ["nvidia"]; # Used to tell the system which graphics backend to use even on wayland
 
     hardware = {
-      opengl.extraPackages = with pkgs; mkDefault [vaapiVdpau]; # Nvidia opengl package for hardware acceleration
+      graphics.extraPackages = with pkgs; mkDefault [vaapiVdpau]; # Nvidia opengl package for hardware acceleration
 
       nvidia = {
         # Read from config the value of kernelPackages so the right package for the kernel in use will be installed
