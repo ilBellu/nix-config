@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
 
     ../common/global
+    ../common/optional/printing.nix
 
     ../common/users/xenorock
   ];
