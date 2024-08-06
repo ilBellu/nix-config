@@ -38,7 +38,7 @@ in {
       nfu = "nix flake update";
 
       # Nh
-      nho = "nh os switch --nom .";
+      nho = "nh os switch .";
       nhh = "nh home switch .";
 
       # NixOs and home-manager
