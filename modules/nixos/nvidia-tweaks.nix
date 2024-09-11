@@ -33,6 +33,7 @@ in {
 
       nvidia = {
         # Read from config the value of kernelPackages so the right package for the kernel in use will be installed
+        open = mkForce false;
         package = mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
         modesetting.enable = mkDefault true; # Required
         nvidiaSettings = mkDefault true; # Enable Nvidia Settings menu
