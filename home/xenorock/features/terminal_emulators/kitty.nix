@@ -18,7 +18,7 @@ in {
   programs.kitty = {
     enable = true;
     font = {
-      name = config.fontProfiles.monospace.family;
+      name = config.fontProfiles.monospace.name;
       size = 12;
     };
     settings = {

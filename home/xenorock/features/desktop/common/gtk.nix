@@ -11,7 +11,7 @@ in rec {
   gtk = {
     enable = true;
     font = {
-      name = config.fontProfiles.regular.family;
+      name = config.fontProfiles.regular.name;
       size = 12;
     };
     theme = {
