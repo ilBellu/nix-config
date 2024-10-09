@@ -67,8 +67,8 @@ in {
         layer = "top";
         position = "top";
         height = 40;
-        margin = "6";
-        mode = "dock";
+        #margin = "6";
+        #mode = "dock";
         fixed-center = true;
 
         modules-left = [
@@ -117,7 +117,7 @@ in {
 
         clock = {
           interval = 1;
-          format = "{:%d/%m %H:%M:%S}";
+          format = "{:%d/%m/%Y %H:%M:%S}";
           format-alt = "{:%d-%m-%Y %H:%M:%S %z}";
           on-click-left = "mode";
           tooltip-format = ''
@@ -126,7 +126,7 @@ in {
         };
 
         pulseaudio = {
-          format = "{icon}  {volume}%";
+          format = "{icon}   {volume}%";
           format-muted = "   0%";
           format-icons = {
             headphone = "󰋋";
@@ -138,7 +138,7 @@ in {
         };
 
         idle_inhibitor = {
-          format = "{icon}";
+          format = " {icon}";
           format-icons = {
             activated = "󰒳";
             deactivated = "󰒲";
@@ -186,7 +186,7 @@ in {
               '';
               # Access a remote machine's and a home machine's ping
               # text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
-              text = "  $ping_${homeMachine}";
+              text = "   $ping_${homeMachine}";
               # Show pings from all machines
               tooltip = concatStringsSep "\n" (map (host: "${host}: $ping_${host}") hosts);
             };
@@ -235,7 +235,7 @@ in {
             text = "$count";
             alt = "$status";
           };
-          format = "{icon}  ({})";
+          format = "{icon}   ({})";
           format-icons = {
             "read" = "󰇯";
             "unread" = "󰇮";
@@ -330,54 +330,41 @@ in {
           padding: 0 8px;
         }
 
-        window#waybar {
-          padding: 0;
-          opacity: 0.75;
-          border-radius: 0.5em;
-          background-color: #${palette.base00};
+        #tray {
           color: #${palette.base05};
         }
 
-        .modules-left {
+        /* Common bar styles */
+        window#waybar {
+          opacity: 0.95;
+          background-color: #${palette.base00};
+          color: #${palette.base05};
+          border: 2px solid #${palette.base0C};
+          border-radius: 15px;
+        }
+
+        /* Top bar trays and styles */
+        window#waybar.top {
+        }
+
+        window#waybar.top .modules-left {
           margin-left: -15px;
         }
 
-        .modules-right {
-          margin-right: -15px;
-        }
-
-        window#waybar.top {
-          opacity: 0.95;
-          background-color: #${palette.base00};
-          border: 2px solid #${palette.base0C};
-          border-radius: 10px;
-        }
-
-        window#waybar.bottom {
-          opacity: 0.95;
-          margin: 0;
-          padding: 0;
-          background-color: #${palette.base00};
-          border: 2px solid #${palette.base0C};
-          border-radius: 10px;
-        }
-
-        #workspaces button {
-          background-color: #${palette.base01};
-          color: #${palette.base05};
-          padding: 5px 10px;
-          margin: 3px 0;
-        }
-
-        #workspaces button.hidden {
-          background-color: #${palette.base00};
-          color: #${palette.base04};
-        }
-
-        #workspaces button.focused,
-        #workspaces button.active {
-          background-color: #${palette.base0A};
+        #custom-menu {
+          background-color: #${palette.base0C};
           color: #${palette.base00};
+          padding-left: 15px;
+          padding-right: 22px;
+          margin: 0;
+          border-radius: 15px;
+        }
+
+        #custom-currentplayer {
+          padding-right: 0;
+        }
+
+        window#waybar.top .modules-center {
         }
 
         #clock {
@@ -387,17 +374,17 @@ in {
           padding-right: 15px;
           margin-top: 0;
           margin-bottom: 0;
-          border-radius: 10px;
+          border-radius: 15px;
         }
 
-        #custom-menu {
-          background-color: #${palette.base0C};
-          color: #${palette.base00};
-          padding-left: 15px;
-          padding-right: 22px;
-          margin: 0;
-          border-radius: 10px;
+        #idle_inhibitor {
+          margin-right: 34px;
         }
+
+        window#waybar.top .modules-right {
+          margin-right: -15px;
+        }
+
         #custom-hostname {
           background-color: #${palette.base0C};
           color: #${palette.base00};
@@ -406,13 +393,32 @@ in {
           margin-right: 0;
           margin-top: 0;
           margin-bottom: 0;
-          border-radius: 10px;
+          border-radius: 15px;
         }
-        #custom-currentplayer {
-          padding-right: 0;
+
+        /* Bottom bar trays and styles */
+        window#waybar.bottom * {
+          padding: 0;
+          margin: 0;
         }
-        #tray {
+
+        window#waybar.bottom #workspaces button {
+          background-color: #${palette.base01};
           color: #${palette.base05};
+          padding: 5px 20px;
+          margin: 2px 1px;
+          border-radius: 15px;
+        }
+
+        window#waybar.bottom #workspaces button.focused,
+        window#waybar.bottom #workspaces button.active {
+          background-color: #${palette.base0A};
+          color: #${palette.base00};
+        }
+
+        window#waybar.bottom #workspaces button.hidden {
+          background-color: #${palette.base00};
+          color: #${palette.base04};
         }
       '';
   };
