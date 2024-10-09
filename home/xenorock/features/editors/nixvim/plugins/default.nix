@@ -35,6 +35,7 @@
 
   # Visual Highlights
   which-key.enable = true;
+  web-devicons.enable = true;
 
   treesitter = import ./treesitter.nix; # Better syntax highlighting
   treesitter-context.enable = true; # Keeps the context on top of the screen when scrolling

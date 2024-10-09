@@ -13,7 +13,7 @@
     ./pfetch.nix # Better neofetch
     ./ranger.nix # TUI file explorer
     ./screen.nix # Usefull for ssh multitasking
-    ./shellcolor.nix # Utility to change running terminal colorscheme
+    # ./shellcolor.nix # Utility to change running terminal colorscheme
     # ./ssh.nix
     ./zoxide.nix # Better cd
     ./starship.nix # Terminal prompt

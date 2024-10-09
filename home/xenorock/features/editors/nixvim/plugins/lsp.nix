@@ -34,8 +34,8 @@
           require("clangd_extensions.inlay_hints").set_inlay_hints()
         '';
     };
-  servers.nil-ls.enable = true; # Nix language server (Requires the code above to expose additional capabilities)
-  servers.rust-analyzer = {
+  servers.nil_ls.enable = true; # Nix language server (Requires the code above to expose additional capabilities)
+  servers.rust_analyzer = {
     enable = true; # Rust language server
     installCargo = true;
     installRustc = true;
